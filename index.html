@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AZ-900: 200 Flashcards - Complete</title>
+    <style>
+        /* Reset & Base Styles */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+            background: linear-gradient(135deg, #002b49 30%, #00558c 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 15px; 
+        }
+
+        /* Container & Header */
+        .container { 
+            max-width: 900px; 
+            width: 100%; 
+        }
+
+        header { 
+            text-align: center; 
+            color: white; 
+            margin-bottom: 25px; 
+        }
+
+        header h1 { 
+            font-size: clamp(1.8em, 5vw, 2.5em); 
+            margin-bottom: 8px; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3); 
+        }
+
+        header p { 
+            font-size: clamp(0.95em, 3vw, 1.1em); 
+            opacity: 0.95; 
+            font-weight: 500; 
+        }
+
+        /* Stats Section */
+        .stats { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+            gap: 12px; 
+            margin-bottom: 25px; 
+        }
+
+        .stat-box { 
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 50px; 
+            border-radius: 20px; 
+            text-align: center; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+            transition: transform 0.2s; 
+            box-shadow: #00e5ff 0px .5px 6px;
+        }
+
+      
+
+        .stat-box h3 { 
+            color: #8bb8e8; 
+            font-size: clamp(1.6em, 4vw, 2.2em); 
+            margin-bottom: 5px; 
+            font-weight: 700; 
+        }
+
+        .stat-box p { 
+            color: #666; 
+            font-size: clamp(0.85em, 2.5vw, 0.95em); 
+            font-weight: 600; 
+        }
+
+        .stat-box.mastered h3 { 
+            color: #4caf50; 
+        }
+
+        .stat-box.weak h3 { 
+            color: #ff9800; 
+        }
+
+        /* Progress Bar */
+        .progress-bar { 
+            width: 100%; 
+            height: 30px; 
+            background: rgba(0, 0, 0, 0.5); 
+            border-radius: 50px; 
+            overflow: hidden; 
+            margin-bottom: 10px; 
+            box-shadow: inset 0 2px 4px rgba(76,175,80,0.5); 
+           
+        }
+
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, #4caf50, #81c784); 
+            transition: width 0.4s ease; 
+            box-shadow: 0 0 10px rgba(76,175,80,0.5); 
+            
+        }
+
+        /* Card Info & Controls */
+        .card-info { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            color: white; 
+            margin-bottom: 20px; 
+            font-size: clamp(0.85em, 2.5vw, 1em); 
+            flex-wrap: wrap; 
+            gap: 10px; 
+            font-weight: 500; 
+        }
+
+        .controls { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 50px; 
+            margin-bottom: 10px; 
+        }
+
+        select { 
+            padding: 12px 15px; 
+            border: none; 
+            border-radius: 12px; 
+            background: rgba(0, 0, 0, 0.8); 
+            color: #ffffff; 
+            font-size: clamp(0.9em, 2.5vw, 1em); 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            box-shadow: 0 2px 8px rgba(106, 178, 255, 0.1); 
+            &:hover { 
+                box-shadow: 0 4px 12px rgba(106, 178, 255, 0.3); 
+                background-color: #002b49;
+            }
+            
+        }
+         
+        
+
+        /* Flashcard Styles */
+        .flashcard-wrapper { 
+            perspective: 1500px; 
+            margin-bottom: 20px; 
+            min-height: clamp(300px, 50vh, 400px); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+
+        .flashcard { 
+            position: relative; 
+            width: 100%; 
+            height: clamp(300px, 50vh, 400px); 
+            cursor: pointer; 
+            transform-style: preserve-3d; 
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+        }
+
+        .flashcard.flipped { 
+            transform: perspective(1000px) rotateY(180deg);
+        }
+
+        .flashcard-face { 
+            position: absolute; 
+            width: 100%; 
+            height: 100%; 
+            backface-visibility: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            padding: clamp(25px, 5vw, 45px); 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+            text-align: center; 
+            overflow-y: auto; 
+        }
+
+        .flashcard-front { 
+            background: linear-gradient(135deg, #8bb8e8 0%, #002b49 100%); 
+            color: white; 
+        }
+
+        .flashcard-back { 
+            background: linear-gradient(135deg, #d2ffc0 5%, #7a9a01 100%); 
+            color: rgb(0, 0, 0); 
+            transform: rotateY(180deg); 
+          
+        }
+
+        /* Card Content Styles */
+        .flashcard-label { 
+            font-size: clamp(1.05em, 2vw, 1em); 
+            opacity: 0.9; 
+            margin-bottom: 18px; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            font-weight: 800; 
+        }
+
+        .flashcard-content { 
+            font-size: clamp(1.05em, 3.5vw, 1.3em); 
+            line-height: 1.6; 
+            font-weight: 500; 
+            word-break: break-word; 
+            white-space: pre-wrap; 
+        }
+
+        /* Card Badges & Labels */
+        .card-number { 
+            position: absolute; 
+            top: 15px; 
+            right: 18px; 
+            background: rgba(255,255,255,0.25); 
+            padding: 8px 16px; 
+            border-radius: 25px; 
+            font-size: clamp(0.8em, 2vw, 0.95em); 
+            font-weight: 700; 
+            backdrop-filter: blur(10px); 
+        }
+
+        .difficulty-badge { 
+            position: absolute; 
+            top: 15px; 
+            left: 18px; 
+            padding: 8px 16px; 
+            border-radius: 25px; 
+            font-size: clamp(0.75em, 1.8vw, 0.9em); 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+
+        .difficulty-easy { 
+            background: #4caf50; 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(76,175,80,0.4); 
+        }
+
+        .difficulty-medium { 
+            background: #ff9800; 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(255,152,0,0.4); 
+        }
+
+        .difficulty-hard { 
+            background: #f44336; 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(244,67,54,0.4); 
+        }
+
+        .category-label { 
+            display: inline-block; 
+            background: rgba(255,255,255,0.5); 
+            padding: 8px 16px; 
+            border-radius: 50px; 
+            font-size: clamp(0.75em, 1.8vw, 0.9em); 
+            margin-top: 18px; 
+            font-weight: 600; 
+        }
+
+        /* Navigation & Buttons */
+        .navigation { 
+            display: grid; 
+            grid-template-columns: .5fr 2fr .5fr; 
+            gap: 50px; 
+            margin-bottom: 30px; 
+        }
+
+        button { 
+            padding: 14px 20px; 
+            border: none; 
+            border-radius: 20px; 
+            background:rgb(255, 255, 255); 
+            color: #002b49; 
+            font-weight: 700; 
+            cursor: pointer; 
+            font-size: clamp(0.9em, 2.5vw, 1em); 
+            transition: all 0.3s; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+            min-height: 50px; 
+           
+        }
+
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: #8ae4ff 0px 1px 5px;
+        }
+     
+
+        button:disabled { 
+            opacity: 0.3; 
+            cursor: not-allowed; 
+        }
+
+        .flip-btn { 
+            background: #7a9a01;
+            color: #ffffff; 
+            border-radius: 20px;
+            font-size: 1.2em;
+            font-weight: 900;
+            width: 100%;
+            justify-self: center;
+            
+        }
+
+        /* Action Buttons */
+        .action-buttons { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+            margin-bottom: 18px; 
+            
+        }
+
+        .master-btn { 
+            background: linear-gradient(135deg, #4caf50, #7a9a01); 
+            color: white; 
+            
+        }
+
+        .weak-btn { 
+            background: linear-gradient(135deg, #ff9800, #ffb500); 
+            color: white; 
+        }
+
+        /* Utility Buttons */
+        .utility-buttons { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 10px; 
+            margin-bottom: 20px; 
+        }
+
+        .shuffle-btn { 
+            background: linear-gradient(135deg, #2196f3, #8bb8e8); 
+            color: white; 
+        }
+
+        .reset-btn { 
+            background: linear-gradient(135deg, #EF6924, #e57373); 
+            color: white; 
+        }
+
+        /* Shortcuts Info */
+        .shortcuts { 
+            background: rgba(255,255,255,0.15); 
+            color: white; 
+            padding: 15px; 
+            border-radius: 20px; 
+            font-size: clamp(0.85em, 2.5vw, 0.95em); 
+            text-align: center; 
+            font-weight: 500; 
+            backdrop-filter: blur(10px); 
+        }
+        @media (max-width: 766px) {
+            .navigation {
+            grid-template-columns: 1fr 1fr;
+            }
+            .flip-btn {
+            grid-column: span 2;
+            }
+            .stats {
+            grid-template-columns: repeat(2, 1fr);
+            }
+            .stat-box {
+            padding: 12px 8px; /* Adjust padding for smaller screens */
+            }
+            .flashcard {
+            height: 300px; /* Set a fixed height for better visibility */
+            }
+            .flashcard-content {
+            font-size: 1em; /* Adjust font size for readability */
+            }
+            button {
+            font-size: 0.9em; /* Adjust button font size */
+            }
+            .shortcuts {
+            font-size: 0.8em; /* Smaller font for shortcuts */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 AZ-900 Complete Deck</h1>
+            <p>200 Cards • Guaranteed Exam Coverage</p>
+        </header>
+        <div class="stats">
+            <div class="stat-box"><h3 id="totalCards">350</h3><p>Total Cards</p></div>
+            <div class="stat-box"><h3 id="currentCard">1</h3><p>Current</p></div>
+            <div class="stat-box mastered"><h3 id="masteredCards">0</h3><p>Mastered</p></div>
+            <div class="stat-box weak"><h3 id="weakCards">0</h3><p>Need Review</p></div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="card-info">
+            <div><span id="categoryDisplay"></span> | <span id="topicDisplay"></span></div>
+            <div id="percentComplete">0% Complete</div>
+        </div>
+        <div class="controls">
+            <select id="categoryFilter">
+                <option value="">All Categories</option>
+                <option value="Cloud Concepts">Cloud Concepts</option>
+                <option value="Azure Architecture">Azure Architecture</option>
+                <option value="Azure ARM">Azure ARM</option>
+                <option value="Management">Management</option>
+                <option value="Governance">Governance</option>
+                <option value="Service Selection">Service Selection</option>
+                <option value="Identity & Access">Identity & Access</option>
+                <option value="Networking">Networking</option>
+                <option value="Security">Security</option>
+                <option value="Monitoring">Monitoring</option>
+                <option value="Pricing & SLA">Pricing & SLA</option>
+                <option value="Well-Architected Framework">Well-Architected Framework</option>
+                <option value="Scenarios">Scenarios</option>
+            </select>
+            <select id="difficultyFilter">
+                <option value="">All Difficulties</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+            </select>
+        </div>
+        <div class="flashcard-wrapper">
+            <div class="flashcard" id="flashcard">
+                <div class="flashcard-face flashcard-front">
+                    <div class="difficulty-badge" id="difficultyBadge">Easy</div>
+                    <div class="card-number" id="cardNumber">1/200</div>
+                    <div class="flashcard-label">QUESTION</div>
+                    <div class="flashcard-content" id="questionContent">Loading...</div>
+                </div>
+                <div class="flashcard-face flashcard-back">
+                    <div class="difficulty-badge" id="difficultyBadgeBack">Easy</div>
+                    <div class="card-number" id="cardNumberBack">1/200</div>
+                    <div class="flashcard-label">ANSWER</div>
+                    <div class="flashcard-content" id="answerContent">Answer</div>
+                    <div class="category-label" id="categoryLabelBack">Category</div>
+                </div>
+            </div>
+        </div>
+        <div class="navigation">
+            <button onclick="previousCard()" id="prevBtn">← Previous</button>
+            <button class="flip-btn" onclick="toggleFlip()">↻ Flip Card</button>
+            <button onclick="nextCard()" id="nextBtn">Next →</button>
+        </div>
+        <div class="action-buttons">
+            <button class="master-btn" onclick="markAsMastered()">✓ Mastered</button>
+            <button class="weak-btn" onclick="markAsWeak()">✗ Need Review</button>
+        </div>
+        <div class="utility-buttons">
+            <button class="shuffle-btn" onclick="shuffleCards()">🔀 Shuffle</button>
+            <button class="reset-btn" onclick="resetProgress()">Reset</button>
+        </div>
+        <div class="shortcuts"><strong>⌨️ Keyboard:</strong> SPACE : Flip | ← → : Navigate | M : Mastered | W : Weak</div>
+    </div>
+    <script>
+        // COMPLETE 200 AZ-900 FLASHCARDS - ALL CARDS INCLUDED
+        // Note: Due to file size, loading from companion JSON file
+        // If JSON file not available, cards are embedded below
+        
+        let flashcards = [];
+        
+        // Try to load from JSON file first
+        fetch('az900_complete_200_cards.json')
+            .then(response => response.json())
+            .then(data => {
+                flashcards = data.cards.map((card, index) => ({
+                    id: index + 1,
+                    category: card.Category,
+                    topic: card.Topic,
+                    difficulty: card.Difficulty,
+                    question: card.Question,
+                    answer: card.Answer
+                }));
+                console.log(`✅ Loaded ${flashcards.length} cards from JSON`);
+                initializeApp();
+            })
+            .catch(error => {
+                console.log('JSON file not found, using embedded cards');
+                loadEmbeddedCards();
+                initializeApp();
+            });
+        
+// Embedded fallback cards (first 200 cards generated earlier)
+function loadEmbeddedCards() {
+    flashcards = [
+        {id:1, category:"Cloud Concepts", topic:"Definitions", difficulty:"Easy", question:"What is cloud computing?", answer:"The delivery of computing services (servers, storage, databases, networking, software) over the internet ('the cloud') rather than locally on computers or data centers."},
+        {id:2, category:"Cloud Concepts", topic:"Benefits", difficulty:"Easy", question:"What are the benefits of using cloud services?", answer:"Cost reduction, global scale, speed and agility, increased productivity, performance, reliability, and security."},
+        {id:3, category:"Cloud Concepts", topic:"Elasticity", difficulty:"Easy", question:"Define elasticity in cloud computing.", answer:"Automatic scaling of resources up or down in near real-time based on demand."},
+        {id:4, category:"Cloud Concepts", topic:"Economics", difficulty:"Easy", question:"What is the difference between CapEx and OpEx?", answer:"CapEx is upfront infrastructure spending; OpEx is ongoing pay-as-you-go operating expense."},
+        {id:5, category:"Cloud Concepts", topic:"Security", difficulty:"Medium", question:"Explain the shared responsibility model.", answer:"Provider secures the cloud (datacenters, networking, hosts); customer secures data, identities, devices, and access."},
+        {id:6, category:"Cloud Concepts", topic:"Service Models", difficulty:"Easy", question:"Name the three primary cloud service models with examples.", answer:"IaaS (Azure VMs), PaaS (Azure App Service), SaaS (Microsoft 365)."},
+        {id:7, category:"Cloud Concepts", topic:"Deployment Models", difficulty:"Easy", question:"What are the three deployment models?", answer:"Public cloud, Private cloud, Hybrid cloud."},
+        {id:8, category:"Cloud Concepts", topic:"Control", difficulty:"Easy", question:"Which service model gives customers the most control?", answer:"IaaS provides maximum control over OS and middleware."},
+        {id:9, category:"Cloud Concepts", topic:"Managed", difficulty:"Easy", question:"Which model suits quick app deployment without infra management?", answer:"PaaS, because the platform is managed by the provider."},
+        {id:10, category:"Cloud Concepts", topic:"Availability", difficulty:"Medium", question:"Define high availability.", answer:"Ability to remain operational with minimal downtime; backed by SLAs (e.g., 99.9%+)."},
+        {id:11, category:"Cloud Concepts", topic:"DR", difficulty:"Medium", question:"How does GRS increase availability?", answer:"Geo-Redundant Storage replicates data to a secondary region for regional disaster resilience."},
+        {id:12, category:"Cloud Concepts", topic:"Fault Tolerance", difficulty:"Medium", question:"What is fault tolerance?", answer:"System's ability to continue operating properly despite component failures."},
+        {id:13, category:"Cloud Concepts", topic:"Scalability", difficulty:"Medium", question:"Define scalability and vertical vs horizontal scaling.", answer:"Scalability adjusts capacity; vertical adds resources to a node, horizontal adds more nodes."},
+        {id:14, category:"Cloud Concepts", topic:"Elasticity", difficulty:"Medium", question:"Elasticity vs scalability?", answer:"Elasticity is auto, real-time scaling; scalability is the capacity to scale when needed."},
+        {id:15, category:"Cloud Concepts", topic:"Resilience", difficulty:"Medium", question:"Define resilience.", answer:"Ability to recover and continue operations during/after failures."},
+        {id:16, category:"Cloud Concepts", topic:"Pricing", difficulty:"Easy", question:"Explain consumption-based pricing.", answer:"Pay only for what you use; no upfront costs."},
+        {id:17, category:"Cloud Concepts", topic:"Economies", difficulty:"Easy", question:"What are economies of scale in cloud?", answer:"Lower unit costs due to massive provider scale passed on to customers."},
+        {id:18, category:"Cloud Concepts", topic:"Agility", difficulty:"Easy", question:"What is agility in cloud?", answer:"Rapid provisioning and iteration without heavy upfront investments."},
+        {id:19, category:"Cloud Concepts", topic:"Compliance", difficulty:"Medium", question:"Compliance benefits of cloud?", answer:"Access to standardized certifications/audits (ISO, SOC, etc.) reduces individual compliance burden."},
+        {id:20, category:"Cloud Concepts", topic:"Private Cloud", difficulty:"Easy", question:"Which cloud allows isolation hosted externally?", answer:"Private hosted cloud."},
+        {id:21, category:"Cloud Concepts", topic:"Cost", difficulty:"Easy", question:"Most cost-effective model for small businesses?", answer:"Public cloud."},
+        {id:22, category:"Cloud Concepts", topic:"Regions", difficulty:"Easy", question:"What is a region and availability zone?", answer:"Region is geographic area; zone is a physically separate datacenter within a region."},
+        {id:23, category:"Cloud Concepts", topic:"Hybrid", difficulty:"Easy", question:"Why use hybrid cloud?", answer:"Keep sensitive data on-prem while leveraging cloud scale for other workloads."},
+        {id:24, category:"Cloud Concepts", topic:"Multi-Cloud", difficulty:"Medium", question:"Advantages of multi-cloud?", answer:"Avoid lock-in, optimize services/costs, improve resilience."},
+        {id:25, category:"Cloud Concepts", topic:"Responsibility", difficulty:"Medium", question:"Key difference of IaaS vs PaaS responsibility?", answer:"IaaS: customer manages OS/runtime; PaaS: provider manages OS/runtime."},
+        {id:26, category:"Cloud Concepts", topic:"Serverless", difficulty:"Easy", question:"What is serverless?", answer:"Event-driven compute without server management; pay per execution (e.g., Azure Functions)."},
+        {id:27, category:"Cloud Concepts", topic:"Triggers", difficulty:"Easy", question:"What triggers Azure Functions?", answer:"HTTP, timers, queue/storage events, Event Grid, Service Bus, etc."},
+        {id:28, category:"Cloud Concepts", topic:"Resiliency", difficulty:"Medium", question:"What is platform resiliency?", answer:"Built-in redundancy and failover in platform services."},
+        {id:29, category:"Cloud Concepts", topic:"Migration", difficulty:"Medium", question:"Cloud migration strategies?", answer:"Lift-and-shift, replatform, refactor/re-architect, retire, retain."},
+        {id:30, category:"Cloud Concepts", topic:"Characteristics", difficulty:"Medium", question:"Name NIST cloud characteristics.", answer:"On-demand self-service, broad network access, resource pooling, rapid elasticity, measured service, multi-tenancy."},
+        {id:31, category:"Cloud Concepts", topic:"Global Reach", difficulty:"Easy", question:"Describe global reach.", answer:"Dozens of regions worldwide allow deployment near users to reduce latency."},
+        {id:32, category:"Cloud Concepts", topic:"Latency", difficulty:"Easy", question:"What is latency and mitigation?", answer:"Response delay; mitigate by deploying in nearby regions and using CDN/Front Door."},
+        {id:33, category:"Cloud Concepts", topic:"SLA", difficulty:"Medium", question:"What does 99.95% SLA imply monthly?", answer:"Approximately 21.6 minutes maximum downtime per month."},
+        {id:34, category:"Cloud Concepts", topic:"DR", difficulty:"Medium", question:"Example of DR in Azure.", answer:"Use Azure Site Recovery to replicate and fail over VMs to a secondary region."},
+        {id:35, category:"Cloud Concepts", topic:"Backup vs ASR", difficulty:"Medium", question:"Azure Backup vs Site Recovery?", answer:"Backup protects data; ASR enables workload failover for business continuity."},
+        {id:36, category:"Cloud Concepts", topic:"Cost", difficulty:"Medium", question:"Options to reduce CapEx?", answer:"Pay-as-you-go, Reserved Instances, Spot VMs, Azure Hybrid Benefit."},
+        {id:37, category:"Cloud Concepts", topic:"Advisor", difficulty:"Easy", question:"Purpose of Azure Advisor?", answer:"Personalized optimization for cost, security, reliability, performance."},
+        {id:38, category:"Cloud Concepts", topic:"PaaS Security", difficulty:"Medium", question:"Shared responsibility in PaaS?", answer:"Provider manages infra/OS; customer manages data, identity, app config."},
+        {id:39, category:"Cloud Concepts", topic:"Edge", difficulty:"Medium", question:"What is public edge network?", answer:"Global edge POPs accelerating content and routing (e.g., Front Door, CDN)."},
+        {id:40, category:"Cloud Concepts", topic:"Physical Security", difficulty:"Medium", question:"How Azure secures datacenters?", answer:"Biometrics, multi-layer access, 24/7 monitoring, and strict processes."},
+        {id:41, category:"Azure Architecture", topic:"Regions", difficulty:"Easy", question:"What is an Azure Region?", answer:"Geographic area with one or more datacenters connected by low-latency networks."},
+        {id:42, category:"Azure Architecture", topic:"AZ vs AS", difficulty:"Medium", question:"Availability Zones vs Availability Sets?", answer:"Zones are separate datacenters; Sets spread across fault/update domains in one datacenter."},
+        {id:43, category:"Azure Architecture", topic:"Org", difficulty:"Easy", question:"Define resource, resource group, subscription.", answer:"Resource=unit, RG=container for resources, Subscription=billing/security boundary."},
+        {id:44, category:"Azure Architecture", topic:"Governance", difficulty:"Medium", question:"What are management groups?", answer:"Hierarchy above subscriptions for policy/RBAC/budget governance."},
+        {id:45, category:"Azure Architecture", topic:"Hierarchy", difficulty:"Easy", question:"What is the Azure hierarchy?", answer:"Management Group → Subscription → Resource Group → Resource."},
+        {id:46, category:"Azure Architecture", topic:"ARM", difficulty:"Medium", question:"What is Azure Resource Manager?", answer:"Control plane/API for deploying and managing resources consistently."},
+        {id:47, category:"Azure Architecture", topic:"ARM Templates", difficulty:"Medium", question:"What are ARM templates?", answer:"JSON IaC files describing resource deployments."},
+        {id:48, category:"Azure Architecture", topic:"Bicep", difficulty:"Medium", question:"Why use Bicep?", answer:"Concise DSL compiling to ARM JSON with better authoring experience."},
+        {id:49, category:"Azure Architecture", topic:"VNet", difficulty:"Easy", question:"What is a VNet?", answer:"Private, isolated network space in Azure for resources to communicate securely."},
+        {id:50, category:"Azure Architecture", topic:"Connectivity", difficulty:"Medium", question:"VNet Peering vs VPN Gateway?", answer:"Peering=Azure-to-Azure private; VPN=encrypted over internet to on-prem/other VNets."},
+        {id:51, category:"Azure Architecture", topic:"Connectivity", difficulty:"Medium", question:"What is ExpressRoute?", answer:"Private dedicated circuit from on-prem to Azure with predictable latency."},
+        {id:52, category:"Azure Architecture", topic:"Load Balancing", difficulty:"Medium", question:"Load Balancer vs App Gateway?", answer:"LB=L4 TCP/UDP; App Gateway=L7 HTTP(S) with WAF and URL routing."},
+        {id:53, category:"Azure Architecture", topic:"Security", difficulty:"Medium", question:"What is Azure Firewall?", answer:"Managed, scalable stateful firewall with FQDN, DNAT/SNAT, and threat intel."},
+        {id:54, category:"Azure Architecture", topic:"Security", difficulty:"Easy", question:"What is an NSG?", answer:"Rule set allowing/denying traffic at subnet/NIC level."},
+        {id:55, category:"Azure Architecture", topic:"DNS", difficulty:"Easy", question:"What is Azure DNS?", answer:"Authoritative DNS hosting for public/private zones in Azure."},
+        {id:56, category:"Azure Architecture", topic:"Storage", difficulty:"Medium", question:"Which storage types exist?", answer:"Blob, File, Queue, Table, and Managed Disks."},
+        {id:57, category:"Azure Architecture", topic:"Storage", difficulty:"Medium", question:"Blob vs File vs Queue vs Table?", answer:"Blob=objects, File=SMB shares, Queue=messages, Table=NoSQL key-value."},
+        {id:58, category:"Azure Architecture", topic:"Analytics", difficulty:"Medium", question:"What is ADLS Gen2?", answer:"Blob-based data lake with hierarchical namespace for big data analytics."},
+        {id:59, category:"Azure Architecture", topic:"Storage Tiers", difficulty:"Medium", question:"Hot vs Cool vs Archive?", answer:"Hot=frequent, Cool=30+ days infrequent, Archive=hours to restore, rare access."},
+        {id:60, category:"Azure Architecture", topic:"Database", difficulty:"Easy", question:"What is Azure SQL Database?", answer:"Managed relational PaaS with built-in HA, backups, and scaling."},
+        {id:61, category:"Azure Architecture", topic:"Database", difficulty:"Medium", question:"SQL Managed Instance vs SQL on VM?", answer:"MI=PaaS with near full SQL features; VM=IaaS full control."},
+        {id:62, category:"Azure Architecture", topic:"NoSQL", difficulty:"Medium", question:"What is Cosmos DB?", answer:"Globally distributed NoSQL DB with 5 consistency levels and multi-region writes."},
+        {id:63, category:"Azure Architecture", topic:"Open Source DB", difficulty:"Easy", question:"Azure Database for PostgreSQL usage?", answer:"Managed PostgreSQL for apps needing OSS features/extensions."},
+        {id:64, category:"Azure Architecture", topic:"Cache", difficulty:"Easy", question:"What is Azure Cache for Redis?", answer:"In-memory cache for sub-ms latency and offloading databases."},
+        {id:65, category:"Azure Architecture", topic:"Analytics", difficulty:"Medium", question:"What is Azure Synapse?", answer:"Unified analytics (SQL DW + Spark + pipelines) for big data/warehousing."},
+        {id:66, category:"Azure Architecture", topic:"Analytics", difficulty:"Medium", question:"What is Azure Databricks?", answer:"Optimized Spark platform for data engineering, ML, collaborative notebooks."},
+        {id:67, category:"Azure Architecture", topic:"Integration", difficulty:"Medium", question:"What is Azure Data Factory?", answer:"ETL/ELT service; pipelines orchestrate movement/transforms."},
+        {id:68, category:"Azure Architecture", topic:"BI", difficulty:"Easy", question:"What is Power BI?", answer:"BI platform for interactive reports and dashboards."},
+        {id:69, category:"Azure Architecture", topic:"Compute", difficulty:"Medium", question:"What is a VM Scale Set?", answer:"Autoscaling set of identical VMs with load balancing."},
+        {id:70, category:"Azure Architecture", topic:"Containers", difficulty:"Medium", question:"What is AKS?", answer:"Managed Kubernetes service for container orchestration."},
+        {id:71, category:"Azure Architecture", topic:"Serverless", difficulty:"Easy", question:"What is Azure Functions?", answer:"Event-driven serverless compute billed by execution."},
+        {id:72, category:"Azure Architecture", topic:"Integration", difficulty:"Easy", question:"What is Logic Apps?", answer:"No/low-code workflow automation with connectors."},
+        {id:73, category:"Azure Architecture", topic:"Streaming", difficulty:"Medium", question:"What is Event Hubs?", answer:"Streaming ingestion for millions of events/sec."},
+        {id:74, category:"Azure Architecture", topic:"Messaging", difficulty:"Medium", question:"What is Service Bus?", answer:"Enterprise messaging with queues/topics and sessions."},
+        {id:75, category:"Azure Architecture", topic:"Hadoop", difficulty:"Medium", question:"What is HDInsight?", answer:"Managed Hadoop/Spark/Kafka clusters (legacy big data)."},
+        {id:76, category:"Azure Architecture", topic:"Edge", difficulty:"Medium", question:"What is Azure Front Door?", answer:"Global Anycast entry with CDN-like acceleration and WAF."},
+        {id:77, category:"Azure Architecture", topic:"CDN", difficulty:"Easy", question:"What is a CDN?", answer:"Distributed edge cache for static/dynamic content acceleration."},
+        {id:78, category:"Azure Architecture", topic:"Global LB", difficulty:"Medium", question:"What is Traffic Manager?", answer:"DNS-based global routing across endpoints/regions."},
+        {id:79, category:"Azure Architecture", topic:"Redundancy", difficulty:"Medium", question:"Compare LRS/ZRS/GRS/GZRS.", answer:"LRS=1 DC triple copy; ZRS=3 AZs; GRS=LRS+secondary region; GZRS=ZRS+secondary."},
+        {id:80, category:"Azure Architecture", topic:"Hybrid", difficulty:"Medium", question:"What is Azure Arc?", answer:"Extends Azure management/governance to on-prem and multi-cloud."},
+        {id:81, category:"Azure Architecture", topic:"Virtual Desktop", difficulty:"Easy", question:"What is Azure Virtual Desktop?", answer:"Virtualized Windows desktops/apps delivered from Azure."},
+        {id:82, category:"Azure Architecture", topic:"App Service", difficulty:"Medium", question:"Plan vs ASE?", answer:"Plan=shared stamp; ASE=isolated VNet stamp for high scale/security."},
+        {id:83, category:"Azure Architecture", topic:"DNS", difficulty:"Easy", question:"Custom DNS support?", answer:"Azure DNS for public/private zones; Private DNS for VNets."},
+        {id:84, category:"Azure Architecture", topic:"Disks", difficulty:"Easy", question:"What are Managed Disks?", answer:"Provider-managed VM disks with built-in redundancy/scaling."},
+        {id:85, category:"Azure Architecture", topic:"Storage Accounts", difficulty:"Medium", question:"Types of storage accounts?", answer:"General Purpose v2, BlockBlobStorage, FileStorage."},
+        {id:86, category:"Azure Architecture", topic:"Backup", difficulty:"Easy", question:"What is Azure Backup?", answer:"Centralized backup for VMs, files, SQL, SAP HANA."},
+        {id:87, category:"Azure Architecture", topic:"DR", difficulty:"Easy", question:"What is Site Recovery?", answer:"DR service for app-consistent VM replication and failover."},
+        {id:88, category:"Azure Architecture", topic:"DR Patterns", difficulty:"Medium", question:"DR strategies?", answer:"Backup/restore, pilot light, warm standby, multi-site active-active."},
+        {id:89, category:"Azure Architecture", topic:"IaC", difficulty:"Medium", question:"Which services for IaC?", answer:"ARM/Bicep/Terraform for declarative deployments."},
+        {id:90, category:"Azure Architecture", topic:"Blueprints", difficulty:"Medium", question:"What are Blueprints?", answer:"Package of templates/policies/RBAC for compliant environments."},
+        {id:91, category:"Management", topic:"Portal", difficulty:"Easy", question:"What is Azure Portal?", answer:"Web UI to create/configure/monitor Azure resources."},
+        {id:92, category:"Management", topic:"CLI/PS", difficulty:"Easy", question:"Azure CLI vs PowerShell?", answer:"Cross-platform CLI vs PowerShell cmdlets for automation."},
+        {id:93, category:"Management", topic:"Governance", difficulty:"Medium", question:"What is Azure Policy?", answer:"Define/assign policies to enforce standards at scale."},
+        {id:94, category:"Management", topic:"Governance", difficulty:"Medium", question:"What are tags and locks?", answer:"Tags categorize resources; locks prevent delete/modify."},
+        {id:95, category:"Management", topic:"RBAC", difficulty:"Medium", question:"What is RBAC?", answer:"Role-based access control with scoped assignments."},
+        {id:96, category:"Management", topic:"Cost", difficulty:"Medium", question:"What is Cost Management + Billing?", answer:"Analyze, budget, and optimize Azure spend."},
+        {id:97, category:"Management", topic:"TCO", difficulty:"Medium", question:"What is TCO?", answer:"Total Cost of Ownership across lifecycle vs on-prem."},
+        {id:98, category:"Management", topic:"Pricing", difficulty:"Easy", question:"What is Pricing Calculator?", answer:"Estimate monthly costs before deploying services."},
+        {id:99, category:"Management", topic:"Advisor", difficulty:"Easy", question:"Purpose of Advisor?", answer:"Personalized best-practice recommendations."},
+        {id:100, category:"Management", topic:"Monitoring", difficulty:"Medium", question:"What is Azure Monitor?", answer:"Metrics, logs, alerts, and dashboards for telemetry."},
+        {id:101, category:"Management", topic:"Telemetry", difficulty:"Medium", question:"Metrics vs Logs?", answer:"Metrics=timeseries numbers; logs=rich event records."},
+        {id:102, category:"Management", topic:"APM", difficulty:"Medium", question:"What is App Insights?", answer:"APM for web/apps: availability, traces, dependencies."},
+        {id:103, category:"Management", topic:"Logs", difficulty:"Medium", question:"What is Log Analytics Workspace?", answer:"Central KQL-based log store for analysis."},
+        {id:104, category:"Management", topic:"Health", difficulty:"Easy", question:"What is Service Health?", answer:"Personalized service issues/maintenance alerts."},
+        {id:105, category:"Management", topic:"Inventory", difficulty:"Medium", question:"What is Resource Graph?", answer:"Query resources at scale across subscriptions."},
+        {id:106, category:"Management", topic:"Identity", difficulty:"Medium", question:"What are Managed Identities?", answer:"Managed service principals for auth without secrets."},
+        {id:107, category:"Management", topic:"Identity", difficulty:"Medium", question:"What is Identity Governance?", answer:"Access lifecycle, access reviews, privileged access."},
+        {id:108, category:"Management", topic:"Automation", difficulty:"Medium", question:"What is Azure Automation?", answer:"Runbooks/DSC for tasks and configuration management."},
+        {id:109, category:"Management", topic:"Updates", difficulty:"Medium", question:"What is Update Management?", answer:"OS patching compliance and scheduling for servers."},
+        {id:110, category:"Management", topic:"Workflows", difficulty:"Medium", question:"Scheduler vs Logic Apps?", answer:"Scheduler is retired; use Logic Apps for workflows."},
+        {id:111, category:"Management", topic:"MSP", difficulty:"Medium", question:"What is Azure Lighthouse?", answer:"Cross-tenant management for service providers."},
+        {id:112, category:"Management", topic:"Governance", difficulty:"Medium", question:"What are Management Groups?", answer:"Governance scope above subscriptions."},
+        {id:113, category:"Management", topic:"Hybrid", difficulty:"Medium", question:"What can Azure Arc do?", answer:"Govern, inventory, and deploy policies to non-Azure servers/K8s/SQL."},
+        {id:114, category:"Management", topic:"CLI", difficulty:"Easy", question:"Create RG command?", answer:"az group create --name <rg> --location <region>"},
+        {id:115, category:"Management", topic:"Data", difficulty:"Medium", question:"What is AzCopy?", answer:"High-performance data transfer to/from Storage."},
+        {id:116, category:"Management", topic:"Shell", difficulty:"Easy", question:"What is Cloud Shell?", answer:"Browser-based shell with Azure tools preinstalled."},
+        {id:117, category:"Management", topic:"Architecture", difficulty:"Medium", question:"What is Enterprise-scale Landing Zone?", answer:"Reference architecture and accelerators for large-scale Azure."},
+        {id:118, category:"Security", topic:"Identity", difficulty:"Medium", question:"What is Microsoft Entra ID?", answer:"Cloud identity and access management (formerly Azure AD)."},
+        {id:119, category:"Security", topic:"Access", difficulty:"Medium", question:"What is Conditional Access?", answer:"Policy-based access control using user/device/risk signals."},
+        {id:120, category:"Security", topic:"Auth", difficulty:"Easy", question:"What is MFA?", answer:"Multi-factor authentication using multiple verifications."},
+        {id:121, category:"Security", topic:"Auth", difficulty:"Medium", question:"What is passwordless auth?", answer:"Biometrics, FIDO2 keys, Authenticator app without passwords."},
+        {id:122, category:"Security", topic:"B2B/B2C", difficulty:"Medium", question:"Azure AD B2B vs B2C?", answer:"B2B=partner collaboration; B2C=consumer identity for apps."},
+        {id:123, category:"Security", topic:"Privileged", difficulty:"Medium", question:"What is PIM?", answer:"Just-in-time elevation, approval workflows, audit for privileged roles."},
+        {id:124, category:"Security", topic:"Access", difficulty:"Medium", question:"What is JIT access?", answer:"Time-bound, on-demand access to minimize exposure."},
+        {id:125, category:"Security", topic:"Posture", difficulty:"Medium", question:"What is Defender for Cloud?", answer:"CSPM and workload protection with recommendations/alerts."},
+        {id:126, category:"Security", topic:"Endpoint", difficulty:"Medium", question:"What is Defender for Endpoint?", answer:"Endpoint protection, EDR, and response automation."},
+        {id:127, category:"Security", topic:"Secrets", difficulty:"Medium", question:"What is Key Vault?", answer:"Secure secrets/keys/certs storage with RBAC and logging."},
+        {id:128, category:"Security", topic:"Network", difficulty:"Medium", question:"What is DDoS Protection?", answer:"Network-level mitigation for volumetric attacks."},
+        {id:129, category:"Security", topic:"Model", difficulty:"Medium", question:"What is Zero Trust?", answer:"Never trust, always verify; least privilege, segment, monitor."},
+        {id:130, category:"Security", topic:"Network", difficulty:"Medium", question:"What is NSG?", answer:"Stateless allow/deny rules for subnets/NICs."},
+        {id:131, category:"Security", topic:"WAF", difficulty:"Medium", question:"What is WAF?", answer:"Layer 7 protection from common web exploits (OWASP)."},
+        {id:132, category:"Security", topic:"SIEM", difficulty:"Medium", question:"What is Sentinel?", answer:"Cloud-native SIEM/SOAR for detection and response."},
+        {id:133, category:"Security", topic:"Data", difficulty:"Medium", question:"Best practices for data classification?", answer:"Label, protect by sensitivity, encrypt, and monitor access."},
+        {id:134, category:"Security", topic:"Encryption", difficulty:"Medium", question:"Data-at-rest options?", answer:"Platform-managed keys, customer-managed keys, customer-provided keys."},
+        {id:135, category:"Security", topic:"Transport", difficulty:"Easy", question:"Data-in-transit encryption?", answer:"TLS/HTTPS between clients and services."},
+        {id:136, category:"Security", topic:"SQL", difficulty:"Medium", question:"What is TDE?", answer:"Transparent Data Encryption secures SQL data files at rest."},
+        {id:137, category:"Security", topic:"Identity", difficulty:"Medium", question:"What is a Managed Identity?", answer:"Azure-managed identity for services to get tokens without secrets."},
+        {id:138, category:"Security", topic:"Score", difficulty:"Medium", question:"What is Secure Score?", answer:"Quantified security posture with improvement actions."},
+        {id:139, category:"Security", topic:"CAF", difficulty:"Medium", question:"How CAF supports security?", answer:"Guidance for governance, identity, network, and platform security."},
+        {id:140, category:"Security", topic:"Compliance", difficulty:"Medium", question:"Common certifications in Azure?", answer:"ISO 27001, SOC, GDPR, HIPAA, FedRAMP, PCI DSS, etc."},
+        {id:141, category:"Security", topic:"Trust", difficulty:"Easy", question:"What is Trust Center?", answer:"Portal with Azure security, privacy, and compliance info."},
+        {id:142, category:"Security", topic:"Policy", difficulty:"Medium", question:"Policy for compliance?", answer:"Audit/deny/modify policies to enforce configurations."},
+        {id:143, category:"Security", topic:"Blueprints", difficulty:"Medium", question:"Blueprints’ role?", answer:"Deploy compliant envs with policies/roles/templates."},
+        {id:144, category:"Security", topic:"Governance", difficulty:"Medium", question:"What is Microsoft Purview?", answer:"Data governance, catalog, lineage, and information protection."},
+        {id:145, category:"Security", topic:"Servers", difficulty:"Medium", question:"Defender for Servers?", answer:"Threat protection and vulnerability management for servers."},
+        {id:146, category:"Security", topic:"Network Logs", difficulty:"Medium", question:"What are NSG Flow Logs?", answer:"Logs of allowed/denied traffic for analytics."},
+        {id:147, category:"Security", topic:"Private", difficulty:"Medium", question:"What are Private Endpoints?", answer:"Private IP access to PaaS services within VNets."},
+        {id:148, category:"Security", topic:"Private", difficulty:"Medium", question:"What is Private Link?", answer:"Private connectivity to Azure services over Microsoft backbone."},
+        {id:149, category:"Security", topic:"Access", difficulty:"Medium", question:"What is Azure Bastion?", answer:"Portal-based RDP/SSH over TLS without public IPs."},
+        {id:150, category:"Security", topic:"RBAC", difficulty:"Medium", question:"Common built-in roles?", answer:"Owner, Contributor, Reader, and service-specific roles."},
+        {id:151, category:"Pricing & SLA", topic:"Billing", difficulty:"Easy", question:"CapEx vs OpEx in Azure?", answer:"CapEx=upfront hardware; OpEx=pay-as-you-go cloud billing."},
+        {id:152, category:"Pricing & SLA", topic:"Pricing", difficulty:"Easy", question:"What is consumption-based model?", answer:"Charges based on actual usage with no commitments."},
+        {id:153, category:"Pricing & SLA", topic:"Pricing", difficulty:"Easy", question:"What is pay-as-you-go?", answer:"Flexible consumption pricing billed monthly."},
+        {id:154, category:"Pricing & SLA", topic:"Reservations", difficulty:"Medium", question:"What are Reserved Instances?", answer:"1–3 year commitments reducing compute/database costs."},
+        {id:155, category:"Pricing & SLA", topic:"Compute", difficulty:"Medium", question:"What is Spot pricing?", answer:"Deeply discounted VMs subject to eviction."},
+        {id:156, category:"Pricing & SLA", topic:"Licensing", difficulty:"Medium", question:"What is Azure Hybrid Benefit?", answer:"Reuse Windows/SQL licenses to reduce Azure costs."},
+        {id:157, category:"Pricing & SLA", topic:"Contracts", difficulty:"Medium", question:"Define SLA.", answer:"Provider commitment to availability/performance with credits."},
+        {id:158, category:"Pricing & SLA", topic:"Math", difficulty:"Medium", question:"How do SLAs combine?", answer:"Multiply individual SLAs to get composite availability."},
+        {id:159, category:"Pricing & SLA", topic:"Docs", difficulty:"Easy", question:"Where to check SLA updates?", answer:"Azure SLA documentation and service pages."},
+        {id:160, category:"Pricing & SLA", topic:"Lifecycle", difficulty:"Medium", question:"What is service lifecycle?", answer:"Preview → GA → Retirement with deprecation timelines."},
+        {id:161, category:"Pricing & SLA", topic:"Phases", difficulty:"Easy", question:"Preview vs GA vs Deprecated?", answer:"Preview=testing/no SLA; GA=prod-ready; Deprecated=phasing out."},
+        {id:162, category:"Pricing & SLA", topic:"Free Tier", difficulty:"Easy", question:"What are free-tier limits?", answer:"Service-specific caps on free usage (compute/storage/transactions)."},
+        {id:163, category:"Pricing & SLA", topic:"Optimization", difficulty:"Medium", question:"What is cost optimization?", answer:"Right-sizing, scheduling, reservations, and cleanup of waste."},
+        {id:164, category:"Pricing & SLA", topic:"Economics", difficulty:"Easy", question:"Define economies of scale.", answer:"Lower unit costs through large-scale operations."},
+        {id:165, category:"Pricing & SLA", topic:"Tools", difficulty:"Easy", question:"What is Pricing Calculator?", answer:"Estimator for service costs by region/size/usage."},
+        {id:166, category:"Pricing & SLA", topic:"Tools", difficulty:"Medium", question:"What is TCO calculator?", answer:"Compare on-prem vs Azure total costs over time."},
+        {id:167, category:"Pricing & SLA", topic:"Licensing", difficulty:"Medium", question:"What is Enterprise Agreement?", answer:"Volume licensing with negotiated pricing/terms."},
+        {id:168, category:"Pricing & SLA", topic:"Marketplace", difficulty:"Easy", question:"What is Azure Marketplace?", answer:"Catalog of third-party solutions billed via Azure."},
+        {id:169, category:"Pricing & SLA", topic:"Cost Drivers", difficulty:"Medium", question:"What affects total cost?", answer:"Resource type, region, usage time, egress, storage tier, licensing."},
+        {id:170, category:"Pricing & SLA", topic:"Tags", difficulty:"Medium", question:"Why use tags for cost?", answer:"Allocate/showback by cost center, owner, environment."},
+        {id:171, category:"Pricing & SLA", topic:"Exports", difficulty:"Medium", question:"What is billing export?", answer:"Automated detailed usage/cost export to Storage."},
+        {id:172, category:"Pricing & SLA", topic:"Advisor", difficulty:"Medium", question:"Advisor cost recommendations?", answer:"Rightsize, shutdown idle, reserve capacity, remove orphaned resources."},
+        {id:173, category:"Pricing & SLA", topic:"Egress", difficulty:"Medium", question:"How is egress billed?", answer:"Charged for outbound data by volume and destination."},
+        {id:174, category:"Pricing & SLA", topic:"Support", difficulty:"Medium", question:"Azure support plan types?", answer:"Basic, Developer, Standard, Professional Direct, Premier."},
+        {id:175, category:"Pricing & SLA", topic:"Dev/Test", difficulty:"Medium", question:"Dev/Test subscription benefits?", answer:"Discounts and non-production licensing for development/testing."},
+        {id:176, category:"Pricing & SLA", topic:"Billing", difficulty:"Medium", question:"Management group billing?", answer:"Roll-up budgets and governance across subscriptions."},
+        {id:177, category:"Pricing & SLA", topic:"Quotas", difficulty:"Medium", question:"What sets subscription limits?", answer:"Service quotas per region; increase via support requests."},
+        {id:178, category:"Pricing & SLA", topic:"Region Price", difficulty:"Medium", question:"Do prices vary by region?", answer:"Yes, based on infrastructure and market conditions."},
+        {id:179, category:"Pricing & SLA", topic:"Composite SLA", difficulty:"Medium", question:"When do multiple SLAs apply?", answer:"When solutions chain services (storage + compute + network)."},
+        {id:180, category:"Pricing & SLA", topic:"Free SLA", difficulty:"Medium", question:"What SLA for free tier?", answer:"Generally none; best-effort only."},
+        {id:181, category:"Pricing & SLA", topic:"Credits", difficulty:"Medium", question:"How do credits work?", answer:"Promotional or program credits offset usage fees."},
+        {id:182, category:"Pricing & SLA", topic:"Licensing", difficulty:"Medium", question:"Explain Hybrid Use Benefit.", answer:"Apply existing Windows/SQL licenses to Azure to save costs."},
+        {id:183, category:"Pricing & SLA", topic:"Commerce", difficulty:"Medium", question:"CSP vs EA vs PAYG?", answer:"CSP=partner managed; EA=enterprise volume; PAYG=direct monthly."},
+        {id:184, category:"Pricing & SLA", topic:"Support", difficulty:"Medium", question:"Fastest 24/7 response?", answer:"Premier (highest tier) with quickest SLAs."},
+        {id:185, category:"Pricing & SLA", topic:"VM SLA", difficulty:"Medium", question:"VM SLA specifics?", answer:"99.95% in availability sets; 99.9% single instance with premium storage."},
+        {id:186, category:"Pricing & SLA", topic:"Preview", difficulty:"Medium", question:"Preview SLA?", answer:"No SLA for preview services."},
+        {id:187, category:"Pricing & SLA", topic:"DevOps", difficulty:"Medium", question:"Reduce dev costs?", answer:"Auto-shutdown, small sizes, spot VMs, suspend non-business hours."},
+        {id:188, category:"Pricing & SLA", topic:"Lifecycle", difficulty:"Medium", question:"What is resource lifecycle?", answer:"Create → operate/monitor → optimize → retire."},
+        {id:189, category:"Pricing & SLA", topic:"Cleanup", difficulty:"Medium", question:"How retire unused resources?", answer:"Budgets, reports, policies, periodic audits."},
+        {id:190, category:"Pricing & SLA", topic:"Limits", difficulty:"Medium", question:"What is Spending Limit?", answer:"Hard stop on certain subscriptions when credits deplete."},
+        {id:191, category:"Pricing & SLA", topic:"Budgets", difficulty:"Medium", question:"When receive budget alerts?", answer:"At configured thresholds (e.g., 50%, 80%, 100%)."},
+        {id:192, category:"Pricing & SLA", topic:"Advisor", difficulty:"Medium", question:"Advisor cost module?", answer:"Automated cost insights by service/account."},
+        {id:193, category:"Pricing & SLA", topic:"Pricing Updates", difficulty:"Medium", question:"How frequent are price changes?", answer:"Updated regularly on Azure website."},
+        {id:194, category:"Pricing & SLA", topic:"Economics", difficulty:"Medium", question:"What is Cloud Economics?", answer:"Principles for maximizing value and minimizing cost."},
+        {id:195, category:"Pricing & SLA", topic:"Framework", difficulty:"Medium", question:"Cost Optimization Framework?", answer:"Microsoft guidance for systematic cost reduction."},
+        {id:196, category:"Pricing & SLA", topic:"Audits", difficulty:"Medium", question:"Which service audits cost?", answer:"Azure Cost Management provides dashboards and exports."},
+        {id:197, category:"Pricing & SLA", topic:"Policy", difficulty:"Medium", question:"Policy for cost governance?", answer:"Require tags/size limits/allowed SKUs to control spend."},
+        {id:198, category:"Pricing & SLA", topic:"Billing", difficulty:"Medium", question:"What is consolidated billing?", answer:"Single invoice aggregating multiple subscriptions."},
+        {id:199, category:"Pricing & SLA", topic:"Anomalies", difficulty:"Medium", question:"What is cost anomaly detection?", answer:"Alerts for unusual spend patterns."},
+        {id:200, category:"Pricing & SLA", topic:"Credit Policy", difficulty:"Medium", question:"Azure credit refunds?", answer:"Generally non-refundable; subject to program terms."},
+        {id:201, category:"Scenarios", topic:"Migration", difficulty:"Medium", question:"Contoso wants to move their on-premises VMs to Azure but maintain full control over the OS and patches. Which service model?", answer:"IaaS (Infrastructure as a Service) - provides VMs where customer manages OS and applications while Azure manages the underlying infrastructure."},
+        {id:202, category:"Scenarios", topic:"Cost", difficulty:"Medium", question:"A startup needs predictable monthly costs instead of pay-as-you-go. What pricing option reduces costs?", answer:"Reserved Instances - 1-3 year commitments provide up to 72% savings with predictable monthly costs."},
+        {id:203, category:"Scenarios", topic:"Service Selection", difficulty:"Easy", question:"Tailspin Toys uses Office 365 and wants all services from Microsoft cloud. What deployment model?", answer:"Public cloud - using Microsoft's shared infrastructure for all services."},
+        {id:204, category:"Scenarios", topic:"Application", difficulty:"Medium", question:"A company needs to deploy a web application quickly without managing servers or OS. Which service?", answer:"Azure App Service (PaaS) - provides managed platform for web applications without infrastructure management."},
+        {id:205, category:"Scenarios", topic:"Storage", difficulty:"Medium", question:"Adventure Works needs to store 100TB of infrequently accessed backup data cost-effectively. Which storage tier?", answer:"Archive tier - lowest cost for data accessed less than once per year with retrieval time in hours."},
+        {id:206, category:"Scenarios", topic:"Security", difficulty:"Medium", question:"Fabrikam requires users to provide phone verification when accessing from new locations. What feature?", answer:"Conditional Access with MFA - policies requiring additional verification based on location/risk signals."},
+        {id:207, category:"Scenarios", topic:"Disaster Recovery", difficulty:"Hard", question:"Northwind needs to fail over their entire application to another region during disasters. Which service?", answer:"Azure Site Recovery - replicates and fails over entire workloads to secondary regions for business continuity."},
+        {id:208, category:"Scenarios", topic:"Network", difficulty:"Medium", question:"Contoso needs private connectivity between Azure and their datacenter without internet. Which service?", answer:"ExpressRoute - dedicated private connection bypassing the public internet with predictable bandwidth."},
+        {id:209, category:"Scenarios", topic:"Database", difficulty:"Medium", question:"Wide World Importers needs a globally distributed database with automatic failover. Which service?", answer:"Azure Cosmos DB - globally distributed NoSQL database with multi-region writes and automatic failover."},
+        {id:210, category:"Scenarios", topic:"Monitoring", difficulty:"Easy", question:"A company wants recommendations to optimize their Azure environment for cost and security. Which service?", answer:"Azure Advisor - provides personalized best practice recommendations across all pillars."},
+        {id:211, category:"Scenarios", topic:"Identity", difficulty:"Medium", question:"Litware wants external partners to access specific resources without creating new accounts. What solution?", answer:"Azure AD B2B - allows external users to access resources using their existing credentials."},
+        {id:212, category:"Scenarios", topic:"Compute", difficulty:"Medium", question:"A company has unpredictable workloads that scale from 0 to thousands of requests. Which compute option?", answer:"Azure Functions - serverless compute that scales automatically and bills only for execution time."},
+        {id:213, category:"Scenarios", topic:"Storage", difficulty:"Hard", question:"Adventure Works needs file shares accessible from multiple VMs using SMB protocol. Which storage type?", answer:"Azure Files - provides fully managed SMB file shares accessible from cloud or on-premises."},
+        {id:214, category:"Scenarios", topic:"Networking", difficulty:"Medium", question:"Contoso needs to distribute web traffic across multiple regions with health monitoring. Which service?", answer:"Azure Traffic Manager - DNS-based global load balancer with health checks and failover."},
+        {id:215, category:"Scenarios", topic:"Security", difficulty:"Hard", question:"Fabrikam needs to protect web applications from common attacks like SQL injection. Which service?", answer:"Azure Application Gateway with WAF - provides Layer 7 load balancing with Web Application Firewall protection."},
+        {id:216, category:"Scenarios", topic:"Cost", difficulty:"Easy", question:"A company wants to estimate Azure costs before migration. Which tool?", answer:"Azure Pricing Calculator - estimates monthly costs based on expected service usage and configuration."},
+        {id:217, category:"Scenarios", topic:"Governance", difficulty:"Medium", question:"Wide World Importers needs to enforce tagging policies across all subscriptions. Which service?", answer:"Azure Policy - creates and assigns policies to enforce organizational standards and compliance requirements."},
+        {id:218, category:"Scenarios", topic:"Backup", difficulty:"Easy", question:"Northwind needs automated backup for their Azure VMs with point-in-time recovery. Which service?", answer:"Azure Backup - centralized backup service with automated scheduling and point-in-time recovery options."},
+        {id:219, category:"Scenarios", topic:"Analytics", difficulty:"Medium", question:"Contoso needs to analyze streaming data from IoT devices in real-time. Which service?", answer:"Azure Stream Analytics - real-time analytics service processing streaming data with SQL-like queries."},
+        {id:220, category:"Scenarios", topic:"AI", difficulty:"Easy", question:"Litware wants to add text translation capabilities to their application. Which service?", answer:"Azure Cognitive Services Translator - provides text translation APIs without requiring ML expertise."},
+        {id:221, category:"Scenarios", topic:"Container", difficulty:"Medium", question:"A company wants to run containerized applications with automatic scaling and orchestration. Which service?", answer:"Azure Kubernetes Service (AKS) - managed Kubernetes service for container orchestration and scaling."},
+        {id:222, category:"Scenarios", topic:"Integration", difficulty:"Medium", question:"Adventure Works needs to integrate on-premises systems with cloud applications. Which service?", answer:"Azure Service Bus - enterprise messaging service connecting on-premises and cloud systems reliably."},
+        {id:223, category:"Scenarios", topic:"DevOps", difficulty:"Easy", question:"Fabrikam needs automated build and deployment pipelines for their applications. Which service?", answer:"Azure DevOps Pipelines - provides CI/CD capabilities for automated build, test, and deployment."},
+        {id:224, category:"Scenarios", topic:"Network Security", difficulty:"Medium", question:"A company needs to control network traffic between Azure subnets. Which feature?", answer:"Network Security Groups (NSG) - contain security rules controlling inbound and outbound traffic at subnet/NIC level."},
+        {id:225, category:"Scenarios", topic:"Hybrid", difficulty:"Hard", question:"Northwind wants to extend their on-premises Active Directory to Azure. Which service?", answer:"Azure AD Connect - synchronizes on-premises directories with Azure Active Directory for hybrid identity."},
+        {id:226, category:"Scenarios", topic:"Big Data", difficulty:"Medium", question:"Contoso needs to process large datasets using Apache Spark without managing infrastructure. Which service?", answer:"Azure Databricks - managed Apache Spark platform optimized for Azure with collaborative notebooks."},
+        {id:227, category:"Scenarios", topic:"Content Delivery", difficulty:"Easy", question:"Wide World Importers needs to accelerate global content delivery. Which service?", answer:"Azure CDN - content delivery network distributing content from edge locations worldwide."},
+        {id:228, category:"Scenarios", topic:"Database Migration", difficulty:"Medium", question:"Litware wants to migrate their SQL Server database to Azure with minimal changes. Which option?", answer:"Azure SQL Managed Instance - provides near 100% SQL Server compatibility with instance-scoped features."},
+        {id:229, category:"Scenarios", topic:"Serverless Workflow", difficulty:"Medium", question:"A company needs to automate business processes connecting multiple systems. Which service?", answer:"Azure Logic Apps - serverless workflow service with visual designer and numerous connectors."},
+        {id:230, category:"Scenarios", topic:"Data Warehouse", difficulty:"Hard", question:"Adventure Works needs to analyze petabytes of historical data for business intelligence. Which service?", answer:"Azure Synapse Analytics - combines data warehousing with big data analytics for petabyte-scale analysis."},
+        {id:231, category:"Scenarios", topic:"Mobile Backend", difficulty:"Easy", question:"Fabrikam needs scalable backend services for their mobile application. Which service?", answer:"Azure App Service Mobile Apps - provides backend services for mobile applications with offline sync."},
+        {id:232, category:"Scenarios", topic:"Secret Management", difficulty:"Medium", question:"Northwind needs secure storage for API keys and certificates used by applications. Which service?", answer:"Azure Key Vault - securely stores and manages secrets, keys, and certificates with access control."},
+        {id:233, category:"Scenarios", topic:"Load Balancing", difficulty:"Medium", question:"A company needs Layer 4 load balancing for TCP traffic with high availability. Which service?", answer:"Azure Load Balancer - provides high-performance Layer 4 load balancing with health probes."},
+        {id:234, category:"Scenarios", topic:"Virtual Desktop", difficulty:"Easy", question:"Contoso needs to provide secure remote desktop access to employees. Which service?", answer:"Azure Virtual Desktop - desktop and app virtualization service with secure remote access."},
+        {id:235, category:"Scenarios", topic:"Time Series Data", difficulty:"Medium", question:"Wide World Importers needs to store and analyze IoT sensor data efficiently. Which service?", answer:"Azure Time Series Insights - analytics service designed for time-series data from IoT devices."},
+        {id:236, category:"Scenarios", topic:"Compliance", difficulty:"Hard", question:"Litware needs to ensure all Azure resources comply with GDPR requirements. What approach?", answer:"Combine Azure Policy for enforcement, Azure Blueprints for compliant deployments, and Microsoft Purview for data governance."},
+        {id:237, category:"Scenarios", topic:"Edge Computing", difficulty:"Medium", question:"A manufacturing company needs to process data locally before sending to cloud. Which service?", answer:"Azure IoT Edge - extends cloud analytics to edge devices for local data processing."},
+        {id:238, category:"Scenarios", topic:"API Management", difficulty:"Medium", question:"Adventure Works needs to manage and secure APIs with rate limiting. Which service?", answer:"Azure API Management - provides API gateway with security, throttling, monitoring, and developer portal."},
+        {id:239, category:"Scenarios", topic:"Batch Processing", difficulty:"Easy", question:"Fabrikam needs to process large-scale parallel computing jobs. Which service?", answer:"Azure Batch - cloud-scale job scheduling and compute management for parallel workloads."},
+        {id:240, category:"Scenarios", topic:"DNS", difficulty:"Easy", question:"Northwind needs to host their DNS zones in Azure with high availability. Which service?", answer:"Azure DNS - provides reliable DNS hosting with anycast network and 100% availability SLA."},
+        {id:241, category:"Scenarios", topic:"Messaging", difficulty:"Medium", question:"Contoso needs guaranteed message delivery between microservices with dead letter queues. Which service?", answer:"Azure Service Bus - enterprise messaging with guaranteed delivery, sessions, and dead letter handling."},
+        {id:242, category:"Scenarios", topic:"Machine Learning", difficulty:"Medium", question:"Wide World Importers wants to build ML models without deep ML expertise. Which service?", answer:"Azure Machine Learning Studio - visual interface for building ML models without extensive coding."},
+        {id:243, category:"Scenarios", topic:"Notification", difficulty:"Easy", question:"Litware needs to send push notifications to mobile apps across platforms. Which service?", answer:"Azure Notification Hubs - scalable push notification service supporting all major platforms."},
+        {id:244, category:"Scenarios", topic:"Search", difficulty:"Medium", question:"Adventure Works needs full-text search capabilities for their e-commerce site. Which service?", answer:"Azure Cognitive Search - AI-powered search service with full-text search and cognitive enrichment."},
+        {id:245, category:"Scenarios", topic:"Media", difficulty:"Easy", question:"A company needs to stream video content globally with adaptive bitrate. Which service?", answer:"Azure Media Services - cloud-based platform for encoding, streaming, and protecting video content."},
+        {id:246, category:"Scenarios", topic:"Configuration", difficulty:"Medium", question:"Fabrikam needs centralized configuration management for distributed applications. Which service?", answer:"Azure App Configuration - provides centralized configuration management with feature flags and dynamic updates."},
+        {id:247, category:"Scenarios", topic:"SIEM", difficulty:"Hard", question:"Northwind needs security monitoring and incident response across hybrid environment. Which service?", answer:"Azure Sentinel - cloud-native SIEM/SOAR with AI-powered threat detection and automated response."},
+        {id:248, category:"Scenarios", topic:"Data Factory", difficulty:"Medium", question:"Contoso needs to orchestrate data movement from multiple sources to data warehouse. Which service?", answer:"Azure Data Factory - data integration service with visual pipelines for ETL/ELT processes."},
+        {id:249, category:"Scenarios", topic:"Redis Cache", difficulty:"Easy", question:"Wide World Importers needs sub-millisecond response times for frequently accessed data. Which service?", answer:"Azure Cache for Redis - in-memory cache providing microsecond latency and high throughput."},
+        {id:250, category:"Scenarios", topic:"Event Processing", difficulty:"Medium", question:"Litware needs to process millions of events per second from multiple sources. Which service?", answer:"Azure Event Hubs - big data streaming platform capable of ingesting millions of events per second."},
+        {id:251, category:"Scenarios", topic:"Firewall", difficulty:"Hard", question:"Adventure Works needs next-generation firewall with threat intelligence. Which service?", answer:"Azure Firewall Premium - managed firewall with IDPS, URL filtering, and threat intelligence."},
+        {id:252, category:"Scenarios", topic:"Private Connection", difficulty:"Medium", question:"A company needs private access to Azure Storage without internet exposure. What solution?", answer:"Private Endpoints - provide private IP connectivity to Azure services within your VNet."},
+        {id:253, category:"Scenarios", topic:"Budget Control", difficulty:"Easy", question:"Fabrikam needs to prevent Azure spending beyond allocated budget. Which feature?", answer:"Spending Limits - automatically disable services when reaching spending threshold on certain subscription types."},
+        {id:254, category:"Scenarios", topic:"Disaster Recovery Testing", difficulty:"Medium", question:"Northwind needs to test disaster recovery without affecting production. Which capability?", answer:"Azure Site Recovery test failover - simulates failover to secondary region without impacting primary systems."},
+        {id:255, category:"Scenarios", topic:"Data Lake", difficulty:"Hard", question:"Contoso needs hierarchical namespace for big data analytics on massive datasets. Which storage?", answer:"Azure Data Lake Storage Gen2 - blob storage with hierarchical namespace optimized for analytics."},
+        {id:256, category:"Scenarios", topic:"Application Gateway", difficulty:"Medium", question:"Wide World Importers needs SSL termination and URL-based routing. Which service?", answer:"Azure Application Gateway - Layer 7 load balancer providing SSL offloading and path-based routing."},
+        {id:257, category:"Scenarios", topic:"Cognitive Services", difficulty:"Easy", question:"Litware wants to add image recognition to their mobile app. Which service?", answer:"Azure Cognitive Services Computer Vision - provides image analysis and recognition APIs."},
+        {id:258, category:"Scenarios", topic:"Hybrid Identity", difficulty:"Medium", question:"Adventure Works needs single sign-on between on-premises and cloud applications. What solution?", answer:"Azure AD with federated authentication - enables SSO using on-premises identity provider."},
+        {id:259, category:"Scenarios", topic:"Cost Optimization", difficulty:"Medium", question:"A company wants automated recommendations to reduce Azure costs. Which service?", answer:"Azure Advisor Cost recommendations - provides automated cost optimization suggestions and insights."},
+        {id:260, category:"Scenarios", topic:"Container Registry", difficulty:"Easy", question:"Fabrikam needs private container image storage with security scanning. Which service?", answer:"Azure Container Registry - managed Docker registry with vulnerability scanning and geo-replication."},
+        {id:261, category:"Scenarios", topic:"Queue Processing", difficulty:"Medium", question:"Northwind needs reliable message queuing with poison message handling. Which service?", answer:"Azure Storage Queues - simple queuing service for decoupling components with poison message handling."},
+        {id:262, category:"Scenarios", topic:"Form Recognition", difficulty:"Easy", question:"Contoso needs to extract data from scanned forms automatically. Which service?", answer:"Azure Form Recognizer - AI service for extracting key-value pairs and table data from documents."},
+        {id:263, category:"Scenarios", topic:"Multi-Factor Auth", difficulty:"Medium", question:"Wide World Importers needs phone-based authentication for high-risk sign-ins. Which feature?", answer:"Azure MFA with phone authentication - provides phone call or SMS verification for additional security."},
+        {id:264, category:"Scenarios", topic:"Network Monitoring", difficulty:"Hard", question:"Litware needs to monitor network performance and troubleshoot connectivity issues. Which service?", answer:"Azure Network Watcher - provides monitoring, diagnostic, and analytics tools for Azure networking."},
+        {id:265, category:"Scenarios", topic:"Bot Framework", difficulty:"Easy", question:"Adventure Works wants to build intelligent chatbots for customer service. Which service?", answer:"Azure Bot Service - managed bot development platform with cognitive services integration."},
+        {id:266, category:"Scenarios", topic:"Digital Twins", difficulty:"Medium", question:"A smart building company needs to model and monitor physical environments. Which service?", answer:"Azure Digital Twins - creates digital representations of physical environments for IoT solutions."},
+        {id:267, category:"Scenarios", topic:"Speech Services", difficulty:"Easy", question:"Fabrikam needs speech-to-text conversion for their application. Which service?", answer:"Azure Cognitive Services Speech - provides speech recognition and synthesis capabilities."},
+        {id:268, category:"Scenarios", topic:"SQL Edge", difficulty:"Medium", question:"Northwind needs SQL functionality on IoT edge devices. Which service?", answer:"Azure SQL Edge - optimized SQL database engine for IoT and edge deployments."},
+        {id:269, category:"Scenarios", topic:"Spring Cloud", difficulty:"Easy", question:"A company needs managed Spring Boot applications in Azure. Which service?", answer:"Azure Spring Cloud - fully managed service for Spring Boot applications with built-in service discovery."},
+        {id:270, category:"Scenarios", topic:"Blockchain", difficulty:"Hard", question:"Contoso needs to implement blockchain consortium networks. Which service?", answer:"Azure Blockchain Service - managed blockchain network service (now deprecated - use alternatives)."},
+        {id:271, category:"Scenarios", topic:"Privileged Access", difficulty:"Medium", question:"Wide World Importers needs time-bound admin access with approval workflows. Which service?", answer:"Azure Privileged Identity Management (PIM) - provides just-in-time privileged access with approval processes."},
+        {id:272, category:"Scenarios", topic:"Data Catalog", difficulty:"Medium", question:"Litware needs to discover and understand their data assets across multiple systems. Which service?", answer:"Microsoft Purview - unified data governance service providing data catalog and discovery capabilities."},
+        {id:273, category:"Scenarios", topic:"Static Web Apps", difficulty:"Easy", question:"Adventure Works needs to host static websites with global CDN. Which service?", answer:"Azure Static Web Apps - hosting service for static sites with global distribution and CI/CD integration."},
+        {id:274, category:"Scenarios", topic:"Communication Services", difficulty:"Medium", question:"Fabrikam needs to add voice and video calling to their application. Which service?", answer:"Azure Communication Services - provides communication APIs for voice, video, chat, and SMS."},
+        {id:275, category:"Scenarios", topic:"Defender for Cloud", difficulty:"Hard", question:"Northwind needs unified security management across hybrid cloud workloads. Which service?", answer:"Microsoft Defender for Cloud - provides CSPM and workload protection with security recommendations."},
+        {id:276, category:"Scenarios", topic:"Data Share", difficulty:"Medium", question:"A company needs secure data sharing with external partners. Which service?", answer:"Azure Data Share - enables secure sharing of data from multiple sources with external organizations."},
+        {id:277, category:"Scenarios", topic:"Cognitive Search", difficulty:"Easy", question:"Contoso wants AI-powered search with automatic content enrichment. Which service?", answer:"Azure Cognitive Search - search service with built-in AI capabilities for content enrichment."},
+        {id:278, category:"Scenarios", topic:"Automation", difficulty:"Medium", question:"Wide World Importers needs to automate repetitive tasks and patch management. Which service?", answer:"Azure Automation - provides process automation, configuration management, and update management."},
+        {id:279, category:"Scenarios", topic:"Bastion", difficulty:"Medium", question:"Litware needs secure RDP access to VMs without public IP addresses. Which service?", answer:"Azure Bastion - provides secure RDP/SSH connectivity through the Azure portal over TLS."},
+        {id:280, category:"Scenarios", topic:"Cost Management", difficulty:"Easy", question:"Adventure Works needs detailed billing analysis and cost allocation. Which service?", answer:"Azure Cost Management + Billing - provides cost analysis, budgets, and billing management capabilities."},
+        {id:281, category:"Scenarios", topic:"Resource Mover", difficulty:"Medium", question:"Fabrikam needs to move resources between Azure regions. Which service?", answer:"Azure Resource Mover - simplifies moving Azure resources across regions with dependency validation."},
+        {id:282, category:"Scenarios", topic:"Lighthouse", difficulty:"Hard", question:"A managed service provider needs to manage multiple customer tenants. Which service?", answer:"Azure Lighthouse - enables cross-tenant management for service providers with delegated access."},
+        {id:283, category:"Scenarios", topic:"Orbital", difficulty:"Easy", question:"A satellite company needs ground station as a service. Which service?", answer:"Azure Orbital - satellite ground station service for communicating with satellites."},
+        {id:284, category:"Scenarios", topic:"HPC Cache", difficulty:"Medium", question:"Northwind needs high-performance caching for compute-intensive workloads. Which service?", answer:"Azure HPC Cache - caching service for high-performance computing workloads accessing file storage."},
+        {id:285, category:"Scenarios", topic:"Percept", difficulty:"Medium", question:"Contoso needs AI at the edge for computer vision applications. Which service?", answer:"Azure Percept - edge AI platform for computer vision and speech solutions (discontinued)."},
+        {id:286, category:"Scenarios", topic:"Stack HCI", difficulty:"Hard", question:"Wide World Importers needs hyperconverged infrastructure with Azure integration. Which solution?", answer:"Azure Stack HCI - hyperconverged infrastructure solution that connects on-premises to Azure services."},
+        {id:287, category:"Scenarios", topic:"Arc Data", difficulty:"Medium", question:"Litware needs to run Azure data services on-premises with cloud billing. Which service?", answer:"Azure Arc-enabled data services - runs Azure SQL and PostgreSQL on any Kubernetes cluster."},
+        {id:288, category:"Scenarios", topic:"Confidential Computing", difficulty:"Hard", question:"Adventure Works needs to protect data in use during computation. Which capability?", answer:"Azure Confidential Computing - protects data while being processed using hardware-based trusted execution environments."},
+        {id:289, category:"Scenarios", topic:"Quantum", difficulty:"Easy", question:"A research company needs quantum computing capabilities. Which service?", answer:"Azure Quantum - quantum computing cloud service providing access to quantum hardware and simulators."},
+        {id:290, category:"Scenarios", topic:"VMware Solution", difficulty:"Medium", question:"Fabrikam needs to run VMware workloads natively in Azure. Which service?", answer:"Azure VMware Solution - runs native VMware workloads in Azure with full VMware stack compatibility."},
+        {id:291, category:"Scenarios", topic:"Dedicated HSM", difficulty:"Hard", question:"Northwind needs FIPS 140-2 Level 3 hardware security modules. Which service?", answer:"Azure Dedicated HSM - provides dedicated hardware security modules meeting highest security standards."},
+        {id:292, category:"Scenarios", topic:"Internet Analyzer", difficulty:"Medium", question:"Contoso needs to measure internet connectivity performance to Azure. Which service?", answer:"Azure Internet Analyzer - measures network performance between users and Azure from different locations."},
+        {id:293, category:"Scenarios", topic:"Peering Service", difficulty:"Easy", question:"Wide World Importers needs optimized routing to Microsoft cloud services. Which service?", answer:"Azure Peering Service - improves connectivity and routing to Microsoft cloud services via service provider networks."},
+        {id:294, category:"Scenarios", topic:"Route Server", difficulty:"Medium", question:"Litware needs to simplify routing between network virtual appliances and VNets. Which service?", answer:"Azure Route Server - simplifies dynamic routing between network virtual appliances and virtual networks."},
+        {id:295, category:"Scenarios", topic:"Network Function Manager", difficulty:"Hard", question:"Adventure Works needs to deploy and manage network functions. Which service?", answer:"Azure Network Function Manager - orchestrates network functions from multiple vendors on Azure edge zones."},
+        {id:296, category:"Scenarios", topic:"Private 5G Core", difficulty:"Medium", question:"A manufacturing company needs private 5G networks for industrial IoT. Which service?", answer:"Azure Private 5G Core - enables private 5G networks for industrial and enterprise scenarios."},
+        {id:297, category:"Scenarios", topic:"Modeling", difficulty:"Easy", question:"Fabrikam needs 3D content creation and collaboration. Which service?", answer:"Azure Remote Rendering - renders high-quality 3D content in the cloud and streams to devices."},
+        {id:298, category:"Scenarios", topic:"Object Anchors", difficulty:"Medium", question:"Northwind needs to anchor digital content to physical objects. Which service?", answer:"Azure Object Anchors - detects and tracks physical objects to anchor mixed reality content."},
+        {id:299, category:"Scenarios", topic:"Spatial Anchors", difficulty:"Easy", question:"Contoso needs to place virtual objects that persist across devices. Which service?", answer:"Azure Spatial Anchors - creates multi-user, spatially aware mixed reality experiences across platforms."},
+        {id:300, category:"Scenarios", topic:"Immersive Reader", difficulty:"Medium", question:"Wide World Importers needs to improve reading comprehension in their app. Which service?", answer:"Azure Immersive Reader - AI service that helps users read and comprehend text regardless of reading ability."},
+        {id:301, category:"Well-Architected Framework", topic:"Cost Optimization", difficulty:"Medium", question:"What is the primary goal of Cost Optimization pillar?", answer:"Minimize expenses while maintaining business objectives. Strategies include right-sizing, scheduling, reservations, and removing unused resources."},
+        {id:302, category:"Well-Architected Framework", topic:"Reliability", difficulty:"Medium", question:"What does Reliability pillar emphasize?", answer:"Ensuring systems function correctly and recover from failures. Includes redundancy, failover mechanisms, and disaster recovery planning."},
+        {id:303, category:"Well-Architected Framework", topic:"Performance", difficulty:"Medium", question:"What is Performance Efficiency pillar about?", answer:"Delivering applications efficiently with optimal resource usage. Includes caching, CDN, compression, and selecting right-sized resources."},
+        {id:304, category:"Well-Architected Framework", topic:"Operational Excellence", difficulty:"Medium", question:"What does Operational Excellence include?", answer:"Automation, monitoring, logging, incident response, and continuous improvement of operations and processes."},
+        {id:305, category:"Well-Architected Framework", topic:"Security", difficulty:"Easy", question:"What is Security pillar focus?", answer:"Protecting data, systems, and assets through multiple layers: identity, network, application, data encryption, and compliance."},
+        {id:306, category:"Well-Architected Framework", topic:"Governance", difficulty:"Hard", question:"How do pillars support governance in Azure?", answer:"Each pillar contributes: Cost tags tracking, Reliability SLAs, Performance monitoring, Operations automation, Security policies."},
+        {id:307, category:"Well-Architected Framework", topic:"Design Principles", difficulty:"Medium", question:"What are key WAF design principles?", answer:"Scalability, availability, resiliency, performance, security, cost awareness, and operational excellence."},
+        {id:308, category:"Well-Architected Framework", topic:"Trade-offs", difficulty:"Hard", question:"Example of trade-offs between pillars?", answer:"Geo-redundancy improves reliability but increases costs; encryption improves security but reduces performance."},
+        {id:309, category:"Well-Architected Framework", topic:"Assessment", difficulty:"Medium", question:"How to assess Azure architecture against WAF?", answer:"Use Azure Advisor, Well-Architected Review tool, and Security Center to identify improvement areas across pillars."},
+        {id:310, category:"Well-Architected Framework", topic:"Implementation", difficulty:"Medium", question:"How to implement WAF recommendations?", answer:"Prioritize by business impact, use Azure Blueprints for consistent deployments, and continuously review with Azure Advisor."},
+        {id:311, category:"Azure ARM", topic:"Structure", difficulty:"Medium", question:"What is ARM template basic structure?", answer:"JSON with schema, contentVersion, parameters, variables, resources, outputs sections defining infrastructure."},
+        {id:312, category:"Azure ARM", topic:"Deployment Modes", difficulty:"Hard", question:"Incremental vs Complete deployment modes?", answer:"Incremental: Adds/updates resources only. Complete: Removes resources not in template. Complete is riskier but cleaner."},
+        {id:313, category:"Azure ARM", topic:"Functions", difficulty:"Medium", question:"What ARM template functions do?", answer:"Dynamic values during deployment: resourceId(), reference(), concat(), parameters(), variables() for reusability."},
+        {id:314, category:"Azure ARM", topic:"Dependencies", difficulty:"Hard", question:"How to manage resource dependencies in ARM?", answer:"Use dependsOn property explicitly, or implicit dependencies through resourceId() references. Determines deployment order."},
+        {id:315, category:"Azure ARM", topic:"Bicep", difficulty:"Medium", question:"Advantages of Bicep over ARM JSON?", answer:"Simpler syntax, fewer brackets, functions, loops, modular includes, auto-generates schema - cleaner Infrastructure as Code."},
+        {id:316, category:"Azure ARM", topic:"Outputs", difficulty:"Easy", question:"Purpose of outputs section in ARM template?", answer:"Returns deployment results for use in dependent resources or reference by other templates after deployment."},
+        {id:317, category:"Azure ARM", topic:"Validation", difficulty:"Medium", question:"How to validate ARM template before deployment?", answer:"Use Azure CLI: az deployment group validate, or PowerShell: Test-AzResourceGroupDeployment to catch errors early."},
+        {id:318, category:"Azure ARM", topic:"Parameters", difficulty:"Medium", question:"What are ARM template parameters?", answer:"Input values allowing template reuse across environments. Define with type, defaultValue, allowedValues for flexibility."},
+        {id:319, category:"Governance", topic:"MG vs Policy", difficulty:"Hard", question:"Difference: Management Groups vs Azure Policy?", answer:"MG: Organizational hierarchy for governance scope. Policy: Rules enforcing standards. MG applies RBAC/Policy to subscriptions."},
+        {id:320, category:"Governance", topic:"Blueprints", difficulty:"Medium", question:"What are Azure Blueprints?", answer:"Templates containing resource templates, policy assignments, and role assignments for compliant environment deployment."},
+        {id:321, category:"Governance", topic:"RBAC Scope", difficulty:"Medium", question:"RBAC scope hierarchy from broadest to narrowest?", answer:"Management Group → Subscription → Resource Group → Resource. Inherited by child scopes."},
+        {id:322, category:"Governance", topic:"Naming", difficulty:"Easy", question:"Why resource naming conventions matter?", answer:"Identifies purpose, environment, owner, and location; aids billing, automation, and management at scale."},
+        {id:323, category:"Governance", topic:"Tags", difficulty:"Medium", question:"Tag inheritance behavior in Azure?", answer:"Tags are NOT automatically inherited. Must be explicitly applied to child resources or use Azure Policy to enforce."},
+        {id:324, category:"Governance", topic:"Cost Allocation", difficulty:"Hard", question:"How to allocate costs across departments?", answer:"Use resource tags (Department, CostCenter), enable cost analysis by tags in Cost Management, generate chargeback reports."},
+        {id:325, category:"Governance", topic:"Compliance", difficulty:"Medium", question:"Role of Policy in compliance?", answer:"Defines required configurations (encryption, location, VM size) and enforces/audits compliance automatically across resources."},
+        {id:326, category:"Service Selection", topic:"Storage Choice", difficulty:"Hard", question:"When to use Files vs Blob vs Disk?", answer:"Files: SMB shares, Azure Backup. Blob: Unstructured (images, videos), Archive. Disk: VM storage, high IOPS."},
+        {id:327, category:"Service Selection", topic:"SQL Options", difficulty:"Hard", question:"SQL Database vs Managed Instance vs SQL on VM?", answer:"Database: Managed, scaling limits. Instance: Full SQL compat, instance-scoped features. VM: Full control, any version."},
+        {id:328, category:"Service Selection", topic:"Load Balancing", difficulty:"Hard", question:"Choose: Load Balancer vs App Gateway vs Front Door vs Traffic Manager?", answer:"LB: L4 TCP/UDP regional. App Gateway: L7 HTTP(S) regional WAF. Front Door: Global L7 CDN. TM: DNS-based global."},
+        {id:329, category:"Service Selection", topic:"Compute", difficulty:"Medium", question:"When to use: Functions vs Logic Apps vs App Service?", answer:"Functions: Event-driven, pay per execution. Logic Apps: Workflow automation, many connectors. Service: Always-on apps."},
+        {id:330, category:"Service Selection", topic:"Messaging", difficulty:"Hard", question:"Event Grid vs Event Hubs vs Service Bus?", answer:"Event Grid: Event routing, webhooks. Event Hubs: Streaming ingestion, millions/sec. Service Bus: Enterprise messaging, guaranteed delivery."},
+        {id:331, category:"Service Selection", topic:"Database Purpose", difficulty:"Medium", question:"When to use Cosmos DB vs SQL Database?", answer:"Cosmos DB: Global distribution, NoSQL, multi-region writes. SQL Database: Relational, ACID transactions, structured data."},
+        {id:332, category:"Service Selection", topic:"Analytics", difficulty:"Hard", question:"Synapse vs Databricks vs HDInsight?", answer:"Synapse: SQL DW + Spark integrated. Databricks: Spark-optimized, ML focus. HDInsight: Legacy Hadoop frameworks."},
+        {id:333, category:"Service Selection", topic:"Caching", difficulty:"Easy", question:"When to use Azure Cache for Redis?", answer:"Sub-millisecond latency needs, session state, database query caching, real-time analytics, reducing backend load."},
+        {id:334, category:"Service Selection", topic:"Containers", difficulty:"Medium", question:"ACI vs AKS for containerized apps?", answer:"ACI: Simple containers, fast startup, no orchestration. AKS: Production-scale, auto-scaling, full Kubernetes."},
+        {id:335, category:"Service Selection", topic:"Integration", difficulty:"Medium", question:"Data Factory vs Logic Apps for integration?", answer:"Data Factory: Big data ETL/ELT pipelines, batch processing. Logic Apps: Workflow automation, real-time process integration."},
+        {id:336, category:"Identity & Access", topic:"AAD Editions", difficulty:"Medium", question:"Azure AD Free vs P1 vs P2 features?", answer:"Free: Basic sync. P1: Hybrid identity, MFA, conditional access. P2: PIM, identity protection, access reviews."},
+        {id:337, category:"Identity & Access", topic:"B2B vs B2C", difficulty:"Medium", question:"Azure AD B2B vs B2C differences?", answer:"B2B: External partner collaboration using guest accounts. B2C: Consumer identity management for customer-facing apps."},
+        {id:338, category:"Identity & Access", topic:"Managed Identity", difficulty:"Hard", question:"System vs User-assigned Managed Identity?", answer:"System: Lifecycle tied to resource, auto-deleted. User: Independent, shared across resources, managed separately."},
+        {id:339, category:"Identity & Access", topic:"Service Principal", difficulty:"Medium", question:"What is Service Principal in Azure AD?", answer:"Security identity for applications/services. Created from application registration. Used for non-interactive authentication."},
+        {id:340, category:"Identity & Access", topic:"AD Connect", difficulty:"Medium", question:"Purpose of Azure AD Connect?", answer:"Synchronizes on-premises Active Directory with Azure AD. Enables hybrid identity, single sign-on, and unified account management."},
+        {id:341, category:"Identity & Access", topic:"Conditional Access", difficulty:"Hard", question:"Real-world Conditional Access policy example?", answer:"Require MFA when: user from new location, sign-in risk detected, non-compliant device, or outside trusted network."},
+        {id:342, category:"Identity & Access", topic:"PIM Features", difficulty:"Medium", question:"Key PIM capabilities for privileged access?", answer:"Just-in-time elevation, time-bound access, approval workflows, activity logging, access reviews for compliance."},
+        {id:343, category:"Identity & Access", topic:"Guest Users", difficulty:"Medium", question:"How to manage guest user access in Azure?", answer:"Invite through B2B collaboration, assign RBAC roles, use conditional access policies, track in access reviews."},
+        {id:344, category:"Networking", topic:"Service Endpoints", difficulty:"Hard", question:"Service Endpoints vs Private Endpoints difference?", answer:"Endpoints: VNet to service via public IP with firewall rules. Private: Private IP in VNet, service on private backbone."},
+        {id:345, category:"Networking", topic:"Routing", difficulty:"Medium", question:"What are User-Defined Routes?", answer:"Custom routes overriding Azure default routing. Routes traffic through network virtual appliances, on-premises, or other networks."},
+        {id:346, category:"Networking", topic:"Hub-Spoke", difficulty:"Hard", question:"Hub-Spoke topology benefits?", answer:"Centralized security (DMZ hub), simplified management, cost efficiency, scalability. Hub manages routing between spokes."},
+        {id:347, category:"Networking", topic:"VPN Gateway", difficulty:"Medium", question:"VPN Gateway configuration for hybrid connectivity?", answer:"Configure site-to-site VPN with VPN device on-premises, point-to-site for individual clients, or multi-site deployments."},
+        {id:348, category:"Networking", topic:"Azure Firewall", difficulty:"Hard", question:"When to use Azure Firewall vs NSG?", answer:"Firewall: Managed L3/L4/L7, FQDN filtering, threat intel, DNAT, hub/spoke. NSG: Simple L3/L4, subnet-level, cost-free."},
+        {id:349, category:"Monitoring", topic:"KQL Basics", difficulty:"Medium", question:"What is KQL and when to use?", answer:"Kusto Query Language for querying Log Analytics data. Used for troubleshooting, analytics, and creating alerts in Azure Monitor."},
+        {id:350, category:"Monitoring", topic:"Diagnostic Settings", difficulty:"Medium", question:"How to configure diagnostic settings for resources?", answer:"Send logs/metrics to Log Analytics, Storage, or Event Hub. Enable by resource type to collect telemetry for analysis."}
+
+
+    ];
+    console.log('Using embedded cards');
+}
+        
+        let currentIndex = 0;
+        let filteredCards = [];
+        let isFlipped = false;
+        let masteredCards = new Set();
+        let weakCards = new Set();
+        
+        function initializeApp() {
+            filteredCards = [...flashcards];
+            loadProgress();
+            displayCard();
+            document.getElementById('categoryFilter').addEventListener('change', filterCards);
+            document.getElementById('difficultyFilter').addEventListener('change', filterCards);
+            document.addEventListener('keydown', handleKeyboard);
+            document.getElementById('flashcard').addEventListener('click', toggleFlip);
+            console.log(`✅ App initialized with ${flashcards.length} cards`);
+        }
+        
+        function loadProgress() {
+            const saved = localStorage.getItem('az900Progress200');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                masteredCards = new Set(progress.mastered || []);
+                weakCards = new Set(progress.weak || []);
+            }
+        }
+        
+        function saveProgress() {
+            localStorage.setItem('az900Progress200', JSON.stringify({
+                mastered: Array.from(masteredCards),
+                weak: Array.from(weakCards),
+                lastUpdated: new Date().toISOString()
+            }));
+        }
+        
+        function displayCard() {
+            if (filteredCards.length === 0) {
+                document.getElementById('questionContent').textContent = 'No cards match filters';
+                return;
+            }
+            const card = filteredCards[currentIndex];
+            document.getElementById('questionContent').textContent = card.question;
+            document.getElementById('answerContent').textContent = card.answer;
+            document.getElementById('cardNumber').textContent = `${currentIndex + 1}/${filteredCards.length}`;
+            document.getElementById('cardNumberBack').textContent = `${currentIndex + 1}/${filteredCards.length}`;
+            document.getElementById('categoryDisplay').textContent = card.category;
+            document.getElementById('topicDisplay').textContent = card.topic;
+            document.querySelectorAll('.difficulty-badge').forEach(badge => {
+                badge.textContent = card.difficulty;
+                badge.className = `difficulty-badge difficulty-${card.difficulty.toLowerCase()}`;
+            });
+            document.getElementById('categoryLabelBack').textContent = card.category;
+            document.getElementById('percentComplete').textContent = Math.round((currentIndex + 1) / filteredCards.length * 100) + '% Complete';
+            document.getElementById('progressFill').style.width = ((currentIndex + 1) / filteredCards.length * 100) + '%';
+            isFlipped = false;
+            document.getElementById('flashcard').classList.remove('flipped');
+            document.getElementById('prevBtn').disabled = currentIndex === 0;
+            document.getElementById('nextBtn').disabled = currentIndex === filteredCards.length - 1;
+            updateStats();
+        }
+        
+        // Navigation helpers
+        function moveIndex(delta) {
+            const newIndex = currentIndex + delta;
+            if (newIndex >= 0 && newIndex < filteredCards.length) {
+            currentIndex = newIndex;
+            displayCard();
+            }
+        }
+
+        function nextCard() {
+            moveIndex(1);
+        }
+
+        function previousCard() {
+            moveIndex(-1);
+        }
+
+        // Flip card
+        function toggleFlip() {
+            isFlipped = !isFlipped;
+            document.getElementById('flashcard').classList.toggle('flipped');
+        }
+
+        // Marking helpers
+        function setCardState(cardId, { mastered = false, weak = false } = {}) {
+            if (mastered) {
+            masteredCards.add(cardId);
+            weakCards.delete(cardId);
+            } else if (weak) {
+            weakCards.add(cardId);
+            masteredCards.delete(cardId);
+            }
+            saveProgress();
+            updateStats();
+        }
+
+        function markAsMastered() {
+            if (!filteredCards.length) return;
+            const card = filteredCards[currentIndex];
+            setCardState(card.id, { mastered: true });
+            if (currentIndex < filteredCards.length - 1) nextCard();
+        }
+
+        function markAsWeak() {
+            if (!filteredCards.length) return;
+            const card = filteredCards[currentIndex];
+            setCardState(card.id, { weak: true });
+            if (currentIndex < filteredCards.length - 1) nextCard();
+        }
+
+        // UI Stats
+        function updateStats() {
+            document.getElementById('currentCard').textContent = filteredCards.length ? (currentIndex + 1) : 0;
+            document.getElementById('masteredCards').textContent = masteredCards.size;
+            document.getElementById('weakCards').textContent = weakCards.size;
+        }
+
+        // Shuffle utility
+        function shuffleArray(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function shuffleCards() {
+            if (!filteredCards.length) return;
+            filteredCards = shuffleArray(filteredCards);
+            currentIndex = 0;
+            displayCard();
+        }
+
+        // Reset progress
+        function resetProgress() {
+            if (!confirm('Reset all progress?')) return;
+            masteredCards.clear();
+            weakCards.clear();
+            saveProgress();
+            updateStats();
+        }
+
+        // Filtering UI
+        function filterCards() {
+            const category = document.getElementById('categoryFilter').value;
+            const difficulty = document.getElementById('difficultyFilter').value;
+
+            filteredCards = flashcards.filter(card => {
+            const categoryMatch = !category || card.category === category;
+            const difficultyMatch = !difficulty || card.difficulty === difficulty;
+            return categoryMatch && difficultyMatch;
+            });
+
+            currentIndex = 0;
+            document.getElementById('totalCards').textContent = filteredCards.length;
+            displayCard();
+        }
+
+        // Keyboard shortcuts
+        function handleKeyboard(e) {
+            // SPACE = Flip | ← → = Navigate | M = Mastered | W = Weak
+            if (e.code === 'Space') {
+            e.preventDefault();
+            toggleFlip();
+            return;
+            }
+
+            if (e.code === 'ArrowRight') {
+            nextCard();
+            return;
+            }
+
+            if (e.code === 'ArrowLeft') {
+            previousCard();
+            return;
+            }
+
+            const key = e.key.toLowerCase();
+            if (key === 'm') {
+            markAsMastered();
+            } else if (key === 'w') {
+            markAsWeak();
+            }
+        }
+        </script>
+</body>
+</html>
