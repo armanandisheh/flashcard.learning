@@ -31,20 +31,22 @@
 
         header { 
             text-align: center; 
-            color: white; 
+            color: rgba(0, 153, 255, 0.7); 
             margin-bottom: 25px; 
         }
 
         header h1 { 
             font-size: clamp(1.8em, 5vw, 2.5em); 
-            margin-bottom: 8px; 
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3); 
+            margin-bottom: 1px; 
+            text-shadow:0px 2px 2px rgba(0, 0, 0, 0.95); 
+            opacity: 0.9; 
         }
 
         header p { 
             font-size: clamp(0.95em, 3vw, 1.1em); 
-            opacity: 0.95; 
+            opacity: 0.5; 
             font-weight: 500; 
+            color: #ffffff;
         }
 
     /* Stats Section */
@@ -297,10 +299,11 @@
     /* Navigation */
     .navigation { 
         display: grid; 
-        grid-template-columns: 1fr 1fr; 
+        grid-template-columns: 1fr 1fr;
         gap: 10px; 
-        margin-bottom: 18px; 
+        margin-bottom: 30px; 
         align-self: center;
+   
     }
 
     button { 
@@ -466,10 +469,11 @@
 <body>
     <div class="container">
         <header>
-            <h1>AZ-900 (Microsoft Azure Fundamentals)</h1>
-         
+            <h1 style="text-align: left;">Flash Card</h1>
+            <p style="text-align: left;">AZ-900 (Microsoft Azure Fundamentals)</p>
+       
         </header>
-           <div class="stats">
+        <div class="stats">
         <div class="stat-box"><h3 id="totalCards">350</h3><p>Total</p></div>
         <div class="stat-box"><h3 id="currentCard">1</h3><p>Current</p></div>
         <div class="stat-box mastered"><h3 id="masteredCards">0</h3><p>Mastered</p></div>
