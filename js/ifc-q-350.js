@@ -1,9 +1,6 @@
-// =============================================================
-// IFC Exam Flashcards (350 questions)
-
-// =============================================================
-
-const flashcards = [
+<script>
+        // Sample flashcards data - replace with your CSV data
+        const flashcards = [
 
   // ============ CHAPTER 1: ROLE OF SALES REPRESENTATIVE (Questions 1-8) ============
   { id: 1, category: "Introduction to Mutual Funds Marketplace", topic: "Role of Sales Representative", difficulty: "Easy", question: "What are the three main types of responsibilities for a mutual fund sales representative?", answer: "Legal responsibility (ensuring suitable investments), Ethical responsibility (maintaining high professional standards), and Professional responsibility (maintaining knowledge and competence)" },
@@ -682,7 +679,7 @@ const flashcards = [
   { id: 329, category: "Analysis of Mutual Funds", topic: "Equity Funds", difficulty: "Medium", question: "How do you interpret a fund's style box drift from large-cap value to mid-cap growth over 3 years?", answer: "Possible style drift - fund changing character, maybe manager change, performance chasing, market cap drift due to growth, or intentional strategy evolution. May no longer fit client's allocation needs" },
   
   { id: 330, category: "Evaluating and Selecting Funds", topic: "Fund Performance", difficulty: "Hard", question: "Fund shows positive alpha during bull markets but negative alpha in bear markets. What does this suggest?", answer: "Manager may be taking systematic risk (high beta, growth tilt, momentum) that appears as skill in rising markets but hurts in declining markets. Not true alpha - compensation for additional risk" },
- 
+  
   { id: 331, category: "Evaluating and Selecting Funds", topic: "Fund Selection", difficulty: "Medium", question: "When comparing sector funds, why might standard performance metrics be misleading?", answer: "Sector funds have higher volatility and concentration risk. Standard deviation or Sharpe ratios may not be comparable to diversified funds. Always compare to a sector-specific benchmark and consider sector cycle timing." },
   
   { id: 332, category: "Analysis of Mutual Funds", topic: "Equity Funds", difficulty: "Hard", question: "A fund’s rolling 3-year Sharpe ratios are Year 1: 0.8, Year 2: 1.2, Year 3: 0.3, Year 4: 0.9. How should you interpret this pattern?", answer: "Inconsistent risk-adjusted performance suggests the manager may be changing strategy, taking on different risks, or responding to varying market conditions. Evaluate process stability, mandate adherence, and any manager changes." },
@@ -692,7 +689,7 @@ const flashcards = [
   { id: 334, category: "Analysis of Mutual Funds", topic: "Conservative Funds", difficulty: "Medium", question: "A bond fund’s duration matches its benchmark but underperforms by 0.5% annually. What could explain this difference?", answer: "Possible causes include higher MER, lower credit quality, sector allocation differences, currency hedging costs, cash drag from redemptions, trading expenses, or weak security selection within duration targets." },
 
   { id: 335, category: "Evaluating and Selecting Funds", topic: "Fund Selection", difficulty: "Hard", question: "How can you fairly compare funds with different benchmarks but overlapping investment mandates?", answer: "Construct a common blended benchmark, use risk-adjusted metrics like the Sharpe ratio, analyze holdings overlap, and evaluate consistency of returns versus both category peers and the broad market." },
-  
+
   { id: 336, category: "Know Your Client Communication", topic: "Tax and Retirement Planning", difficulty: "Hard", question: "A client sells a mutual fund for $80,000 (ACB $100,000) in December and buys a similar fund for $75,000 in January. What are the tax implications?", answer: "The $20,000 capital loss is denied under the superficial-loss rule because the repurchase occurred within 30 days of the sale. The loss is added to the new investment’s adjusted cost base and deferred until that position is sold without repurchase." },
   
   { id: 337, category: "Know Your Client Communication", topic: "Tax and Retirement Planning", difficulty: "Hard", question: "Client dies with $500K RRSP. Spouse is beneficiary but already72 years old. What are the rollover options?", answer: "Can rollover to spouse's RRIF, purchase annuity, or take as taxable lump sum. If spouse over 71, must use RRIF. Rollover preserves tax deferral, lump sum fully taxable in year of death" },
@@ -725,5 +722,276 @@ const flashcards = [
 
 ];
 
-// For module usage uncomment the following line:
-// export default flashcards;
+
+        // =========================
+        // Runtime state
+        // =========================
+        let currentIndex = 0;                // index within filteredCards
+        let filteredCards = [];              // view list (changes with filters/shuffle)
+        let isFlipped = false;               // UI flip state
+        let masteredCards = new Set();       // persistent set of mastered IDs
+        let weakCards = new Set();           // persistent set of review IDs
+
+        // Single storage key for everything (lists + last position)
+        const STORAGE_KEY = 'az900Progress200';
+
+        // =========================
+        // App bootstrap
+        // =========================
+        function init() {
+            filteredCards = [...flashcards];
+
+            // Load lists + last card position
+            loadProgress();
+
+            // Try to restore the last viewed card index inside filtered set
+            const savedPayload = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            if (Number.isInteger(savedPayload.currentIndex)) {
+                currentIndex = Math.min(Math.max(0, savedPayload.currentIndex), filteredCards.length - 1);
+            }
+
+            displayCard();
+            updateListCounts();
+
+            // Wire filters + keyboard
+            document.getElementById('categoryFilter').addEventListener('change', filterCards);
+            document.getElementById('difficultyFilter').addEventListener('change', filterCards);
+            document.addEventListener('keydown', handleKeyboard);
+        }
+
+        // =========================
+        // Persistence
+        // =========================
+        function loadProgress() {
+            // Load mastered/review sets from a single payload
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const p = JSON.parse(saved);
+                masteredCards = new Set(p.mastered || []);
+                weakCards = new Set(p.weak || []);
+            } else {
+                masteredCards = new Set();
+                weakCards = new Set();
+            }
+        }
+
+        function saveProgress() {
+            // Persist both lists and last position together
+            const payload = {
+                mastered: Array.from(masteredCards),
+                weak: Array.from(weakCards),
+                currentIndex,
+                lastUpdated: new Date().toISOString()
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+            updateListCounts();
+        }
+
+        // =========================
+        // UI Update helpers
+        // =========================
+        function updateListCounts() {
+            // Update counters in header and on buttons (if present)
+            document.getElementById('weakCards').textContent = weakCards.size;
+            document.getElementById('masteredCards').textContent = masteredCards.size;
+            const rc = document.getElementById('reviewCount'); if (rc) rc.textContent = weakCards.size;
+            const mc = document.getElementById('masteredCount'); if (mc) mc.textContent = masteredCards.size;
+        }
+
+        function displayCard() {
+            if (!filteredCards.length) {
+                document.getElementById('questionContent').textContent = 'No cards match filters';
+                return;
+            }
+
+            const c = filteredCards[currentIndex];
+            document.getElementById('questionContent').textContent = c.question;
+            document.getElementById('answerContent').textContent = c.answer;
+            document.getElementById('cardNumber').textContent = `${currentIndex + 1}/${filteredCards.length}`;
+            document.getElementById('cardNumberBack').textContent = `${currentIndex + 1}/${filteredCards.length}`;
+            document.getElementById('categoryDisplay').textContent = c.category;
+            document.getElementById('topicDisplay').textContent = c.topic;
+
+            ['difficultyBadge', 'difficultyBadgeBack'].forEach(id => {
+                const el = document.getElementById(id);
+                el.textContent = c.difficulty;
+                el.className = `difficulty-badge difficulty-${c.difficulty.toLowerCase()}`;
+            });
+
+            document.getElementById('percentComplete').textContent = Math.round((currentIndex + 1) / filteredCards.length * 100) + '%';
+            document.getElementById('progressFill').style.width = ((currentIndex + 1) / filteredCards.length * 100) + '%';
+            document.getElementById('currentCard').textContent = currentIndex + 1;
+            document.getElementById('prevBtn').disabled = currentIndex === 0;
+            document.getElementById('nextBtn').disabled = currentIndex === filteredCards.length - 1;
+
+            isFlipped = false;
+            document.getElementById('flashcard').classList.remove('flipped');
+
+            // Update stats and persist current position
+            updateStats();
+            saveProgress();
+        }
+
+        function updateStats() {
+            document.getElementById('masteredCards').textContent = masteredCards.size;
+            document.getElementById('weakCards').textContent = weakCards.size;
+        }
+
+        // =========================
+        // Navigation / Actions
+        // =========================
+        function nextCard() {
+            if (currentIndex < filteredCards.length - 1) {
+                currentIndex++;
+                displayCard();
+            }
+        }
+
+        function previousCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                displayCard();
+            }
+        }
+
+        function toggleFlip() {
+            isFlipped = !isFlipped;
+            document.getElementById('flashcard').classList.toggle('flipped');
+        }
+
+        function markAsMastered() {
+            const c = filteredCards[currentIndex];
+            masteredCards.add(c.id);      // add to mastered set
+            weakCards.delete(c.id);       // ensure it leaves review set
+            saveProgress();
+            if (currentIndex < filteredCards.length - 1) nextCard();
+        }
+
+        function markAsWeak() {
+            const c = filteredCards[currentIndex];
+            weakCards.add(c.id);          // add to review set
+            masteredCards.delete(c.id);   // ensure it leaves mastered set
+            saveProgress();
+            if (currentIndex < filteredCards.length - 1) nextCard();
+        }
+
+        function jumpToCard() {
+            const input = document.getElementById('jumpInput');
+            const cardNum = parseInt(input.value);
+            if (cardNum >= 1 && cardNum <= filteredCards.length) {
+                currentIndex = cardNum - 1;
+                displayCard();
+                input.value = '';
+            } else {
+                alert(`Please enter a number between 1 and ${filteredCards.length}`);
+            }
+        }
+
+        // =========================
+        // Lists + Modal
+        // =========================
+        function showReviewList() {
+            const list = flashcards.filter(c => weakCards.has(c.id));
+            showCardListModal('Cards Marked for Review', list);
+        }
+
+        function showMasteredList() {
+            const list = flashcards.filter(c => masteredCards.has(c.id));
+            showCardListModal('Mastered Cards', list);
+        }
+
+        function showCardListModal(title, cards) {
+            document.getElementById('modalTitle').textContent = title;
+            const modalBody = document.getElementById('modalBody');
+
+            if (cards.length === 0) {
+                modalBody.innerHTML = '<div class="empty-list">No cards in this list yet</div>';
+            } else {
+                let html = '<ul class="card-list">';
+                for (const card of cards) {
+                    const snippet = card.question.length > 80 ? card.question.slice(0, 80) + '…' : card.question;
+                    html += `<li onclick="jumpToCardId(${card.id})">
+                    <strong>Card #${card.id} -  ${card.category}</strong>
+                    <div>${snippet}</div>
+                </li>`;
+                }
+                html += '</ul>';
+                modalBody.innerHTML = html;
+            }
+            document.getElementById('cardListModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('cardListModal').style.display = 'none';
+        }
+
+        // Jump by absolute card ID (works even if filters hide it)
+        function jumpToCardId(cardId) {
+            // If current filters hide the target, clear filters so we can show it
+            let idx = filteredCards.findIndex(c => c.id === cardId);
+            if (idx === -1) {
+                filteredCards = [...flashcards];
+                document.getElementById('categoryFilter').value = '';
+                document.getElementById('difficultyFilter').value = '';
+                document.getElementById('totalCards').textContent = filteredCards.length;
+                idx = filteredCards.findIndex(c => c.id === cardId);
+            }
+            if (idx !== -1) {
+                currentIndex = idx;
+                displayCard();
+            }
+            closeModal();
+        }
+
+        // =========================
+        // Utilities
+        // =========================
+        function shuffleCards() {
+            for (let i = filteredCards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [filteredCards[i], filteredCards[j]] = [filteredCards[j], filteredCards[i]];
+            }
+            currentIndex = 0;
+            displayCard();
+        }
+
+        function resetProgress() {
+            if (confirm('Reset all progress? This will clear mastered and review lists.')) {
+                masteredCards.clear();
+                weakCards.clear();
+                currentIndex = 0;
+                // Clear our single key instead of scattered keys
+                localStorage.removeItem(STORAGE_KEY);
+                saveProgress();
+                updateStats();
+                displayCard();
+            }
+        }
+
+        function filterCards() {
+            const cat = document.getElementById('categoryFilter').value;
+            const diff = document.getElementById('difficultyFilter').value;
+            filteredCards = flashcards.filter(c => (!cat || c.category === cat) && (!diff || c.difficulty === diff));
+            currentIndex = 0;
+            document.getElementById('totalCards').textContent = filteredCards.length;
+            displayCard();
+        }
+
+        function handleKeyboard(e) {
+            if (e.code === 'Space') { e.preventDefault(); toggleFlip(); }
+            else if (e.code === 'ArrowRight') nextCard();
+            else if (e.code === 'ArrowLeft') previousCard();
+            else if (e.key.toLowerCase() === 'm') markAsMastered();
+            else if (e.key.toLowerCase() === 'w') markAsWeak();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            const modal = document.getElementById('cardListModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        window.onload = init;
+    </script>
