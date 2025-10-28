@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AZ-900: 200 Flashcards - Complete</title>
+    <style>
+        /* Reset & Base Styles */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+            background: linear-gradient(135deg, #002b49 30%, #00558c 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 15px; 
+        }
+
+        /* Container & Header */
+        .container { 
+            max-width: 900px; 
+            width: 100%; 
+        }
+
+        header { 
+            text-align: center; 
+            color: rgba(0, 153, 255, 0.7); 
+            margin-bottom: 25px; 
+        }
+
+        header h1 { 
+            font-size: clamp(1.8em, 5vw, 2.5em); 
+            margin-bottom: 1px; 
+            text-shadow:0px 2px 2px rgba(0, 0, 0, 0.95); 
+            opacity: 0.9; 
+        }
+
+        header p { 
+            font-size: clamp(0.95em, 3vw, 1.1em); 
+            opacity: 0.5; 
+            font-weight: 500; 
+            color: #ffffff;
+        }
+
+    /* Stats Section */
+    .stats { 
+        display: grid; 
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+        gap: 12px; 
+        margin-bottom: 20px; 
+       
+    }
+
+    .stat-box { 
+        background: rgb(0, 36, 61); 
+        padding: 15px 10px; 
+        border-radius: 10px; 
+        text-align: center; 
+        box-shadow: inset 0  0px 5px rgb(0, 0, 0);
+    }
+
+    .stat-box h3 { 
+        color: #8fa3ff; 
+        font-size: clamp(1.4em, 4vw, 2em); 
+        margin-bottom: 5px; 
+        font-weight: 700; 
+    }
+
+    .stat-box p { 
+        color: #666; 
+        font-size: 0.9em; 
+        font-weight: 600; 
+    }
+
+    .stat-box.mastered h3 { 
+        color: #4caf50; 
+    }
+
+    .stat-box.weak h3 { 
+        color: #ff9800; 
+    }
+
+     
+
+
+    /* List View Buttons */
+    .list-buttons { 
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 10px; 
+        margin-bottom: 20px; 
+    }
+
+    .list-btn { 
+        padding: 12px; 
+        border: none; 
+        border-radius: 8px; 
+        font-weight: 700; 
+        cursor: pointer; 
+        transition: all 0.3s; 
+    }
+
+    .list-btn.review { 
+        background: linear-gradient(135deg, #ff9800, #ffa726); 
+        color: white; 
+    }
+
+    .list-btn.mastered { 
+        background: linear-gradient(135deg, #4caf50, #66bb6a); 
+        color: white; 
+        
+    }
+
+
+        /* Jump to Card Section */
+    .jump-section { 
+        height: 60px;
+        background: rgba(0, 0, 0, 0.2); 
+        padding: 10px; 
+        border-radius: 10px; 
+        margin-bottom: 10px; 
+        display: flex; 
+        gap: 10px; 
+        align-items: center; 
+        flex-wrap: wrap; 
+    }
+
+    .jump-section label { 
+        color: rgb(255, 255, 255); 
+        font-weight: 600; 
+    }
+
+    .jump-section input { 
+        padding: 10px; 
+        border: none; 
+        border-radius: 8px; 
+        width: 120px; 
+        font-size: 1em; 
+    }
+
+    .jump-section button { 
+        padding: 10px 20px; 
+        border: none; 
+        border-radius: 8px; 
+        background: white; 
+        color: #667eea; 
+        font-weight: 700; 
+        cursor: pointer; 
+    }
+
+    .jump-section button:hover { 
+        background: #f0f0f0; 
+    }
+    
+        /* Progress Bar */
+   .progress-bar { 
+        width: 100%; 
+        height: 30px; 
+        background: rgba(0, 0, 0, 0.5); 
+        border-radius: 50px; 
+        overflow: hidden; 
+        margin-bottom: 5px; 
+        box-shadow: inset 0  0px 10px rgb(0, 0, 0);
+    }
+
+    .progress-fill { 
+        height: 100%; 
+        background: linear-gradient(90deg, #6efff5, #00998c); 
+        transition: width 0.4s; 
+        
+    }
+
+     /* Card Info */
+    .card-info { 
+        display: flex; 
+        justify-content: space-between; 
+        color: white; 
+        margin-bottom: 15px; 
+        flex-wrap: wrap; 
+        gap: 5px; 
+        font-weight: 500; 
+    }
+
+    /* Filters */
+    .controls { 
+        display: grid; 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 5px; 
+        margin-bottom: 20px; 
+        
+    }
+
+    select { 
+        color: #e0e0e0;
+        padding: 12px; 
+        border: none; 
+        border-radius: 8px; 
+        font-weight: 600; 
+        cursor: pointer; 
+        background-color: #002139;
+        box-shadow: inset 0  0px 5px rgb(0, 0, 0);
+    }
+
+    /* Flashcard */
+    .flashcard-wrapper { 
+        perspective: 1000px; 
+        margin-bottom: 20px; 
+        min-height: 100px; 
+        display: flex; 
+        align-items: center; 
+    }
+
+    .flashcard { 
+        position: relative; 
+        width: 100%; 
+        height: 250px; 
+        cursor: pointer; 
+        transform-style: preserve-3d; 
+        transition: transform 0.6s; 
+    }
+
+    .flashcard.flipped { 
+        transform: rotateY(180deg); 
+    }
+
+    .flashcard-face { 
+        position: absolute; 
+        width: 100%; 
+        height: 100%; 
+        backface-visibility: hidden; 
+        display: flex; 
+        flex-direction: column; 
+        justify-content: center; 
+        align-items: center; 
+        padding: 40px; 
+        border-radius: 16px; 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+        text-align: center; 
+        overflow-y: auto; 
+    }
+
+    .flashcard-front { 
+       background: linear-gradient(135deg, #8bb8e8 0%, #002b49 100%); 
+        color: white; 
+    }
+
+    .flashcard-back { 
+       background: linear-gradient(135deg, #d2ffc0 5%, #7a9a01 100%); 
+            color: rgb(0, 0, 0); 
+            transform: rotateY(180deg); 
+    }
+
+    .flashcard-content { 
+        font-size: 1.2em; 
+        line-height: 1.6; 
+        white-space: pre-wrap; 
+    }
+
+    .card-number { 
+        position: absolute; 
+        top: 15px; 
+        right: 18px; 
+        background: rgba(255,255,255,0.25); 
+        padding: 8px 16px; 
+        border-radius: 25px; 
+        font-weight: 700; 
+    }
+
+    .difficulty-badge { 
+        position: absolute; 
+        top: 15px; 
+        left: 18px; 
+        padding: 8px 16px; 
+        border-radius: 25px; 
+        font-weight: 800; 
+        text-transform: uppercase; 
+    }
+
+    .difficulty-easy { 
+        background: #4caf50; 
+        color: white; 
+    }
+
+    .difficulty-medium { 
+        background: #ff9800; 
+        color: white; 
+    }
+
+    .difficulty-hard { 
+        background: #f44336; 
+        color: white; 
+    }
+
+    /* Navigation */
+    .navigation { 
+        height: 50px;
+        display: grid; 
+        grid-template-columns: 1fr 1fr;
+        gap: 10px; 
+        margin-bottom: 30px; 
+        align-self: center;
+   
+    }
+
+    button { 
+        padding: 14px 20px; 
+        border: none; 
+        border-radius: 10px; 
+        background: white; 
+        color: #667eea; 
+        font-weight: 700; 
+        cursor: pointer; 
+        transition: all 0.3s; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+    }
+
+    button:hover:not(:disabled) { 
+        transform: translateY(-2px); 
+    }
+
+    button:disabled { 
+        opacity: 0.4; 
+        cursor: not-allowed; 
+    }
+
+    /* .flip-btn { 
+        background: linear-gradient(135deg, #4caf50, #45a049); 
+        color: white; 
+    } */
+
+    /* Action Buttons */
+    .action-buttons { 
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 12px; 
+        margin-bottom: 18px; 
+    }
+
+    .master-btn { 
+        background: linear-gradient(135deg, #4caf50, #66bb6a); 
+        color: white; 
+    }
+
+    .weak-btn { 
+        background: linear-gradient(135deg, #ff9800, #ffa726); 
+        color: white; 
+    }
+
+    /* Utility */
+    .utility-buttons { 
+        display: grid; 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 10px; 
+        margin-bottom: 20px; 
+    }
+
+    .shuffle-btn { 
+        background: linear-gradient(135deg, #2196f3, #42a5f5); 
+        color: white; 
+    }
+
+    .reset-btn { 
+        background: linear-gradient(135deg, #f44336, #e57373); 
+        color: white; 
+    }
+
+    /* Modal */
+    .modal { 
+        display: none; 
+        position: fixed; 
+        z-index: 1000; 
+        left: 0; 
+        top: 0; 
+        width: 100%; 
+        height: 100%; 
+        background: rgba(0,0,0,0.7); 
+        overflow: auto; 
+    }
+
+    .modal-content { 
+        background: white; 
+        margin: 5% auto; 
+        padding: 30px; 
+        border-radius: 16px; 
+        max-width: 600px; 
+        width: 90%; 
+        max-height: 80vh; 
+        overflow-y: auto; 
+    }
+
+    .modal-header { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        margin-bottom: 20px; 
+    }
+
+    .modal-header h2 { 
+        color: #667eea; 
+    }
+
+    .close { 
+        font-size: 32px; 
+        font-weight: bold; 
+        color: #aaa; 
+        cursor: pointer; 
+        line-height: 1; 
+    }
+
+    .close:hover { 
+        color: #000; 
+    }
+
+    .card-list { 
+        list-style: none; 
+    }
+
+    .card-list li { 
+        padding: 12px; 
+        margin-bottom: 8px; 
+        background: #f5f5f5; 
+        border-radius: 8px; 
+        cursor: pointer; 
+        transition: all 0.2s; 
+    }
+
+    .card-list li:hover { 
+        background: #e0e0e0; 
+        transform: translateX(5px); 
+    }
+
+    .card-list li strong { 
+        color: #667eea; 
+        display: block; 
+        margin-bottom: 5px; 
+    }
+
+    .empty-list { 
+        text-align: center; 
+        padding: 40px; 
+        color: #999; 
+        font-style: italic; 
+    }
+
+    .shortcuts { 
+        background: rgba(255,255,255,0.15); 
+        color: white; 
+        padding: 15px; 
+        border-radius: 10px; 
+        text-align: center; 
+    }
+
+    @media (max-width: 600px) { 
+        .navigation { 
+            grid-template-columns: 1fr 1fr; 
+        } 
+        
+        /* .flip-btn { 
+            grid-column: span 2; 
+        }  */
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 style="text-align: left;">Flash Card</h1>
+            <p style="text-align: left;">French Vocabulary</p>
+       
+        </header>
+        <div class="stats">
+        <div class="stat-box"><h3 id="totalCards">350</h3><p>Total</p></div>
+        <div class="stat-box"><h3 id="currentCard">1</h3><p>Current</p></div>
+        <div class="stat-box mastered"><h3 id="masteredCards">0</h3><p>Mastered</p></div>
+        <div class="stat-box weak"><h3 id="weakCards">0</h3><p>Need Review</p></div>
+    </div>
+
+ 
+
+   
+    
+    <!-- List View Buttons -->
+    <div class="list-buttons">
+        <button class="list-btn review" onclick="showReviewList()">View Review List (<span id="reviewCount">0</span>)</button>
+        <button class="list-btn mastered" onclick="showMasteredList()">View Mastered List (<span id="masteredCount">0</span>)</button>
+    </div>
+
+
+       
+ <!-- Jump to Card -->
+    <div class="jump-section">
+        <label for="jumpInput">Select Card:</label>
+        <input type="number" id="jumpInput" min="1" max="350" placeholder="1-292">
+        <button onclick="jumpToCard()">Go</button>
+    </div>
+
+  <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+  <!-- Card Info and Progress -->
+  <div class="card-info">
+        <div><span id="categoryDisplay"></span> | <span id="topicDisplay"></span></div>
+        <div id="percentComplete">0%</div>
+    </div>
+
+    <div class="controls">
+        <select id="categoryFilter"><option value="">All Categories</option><option value="Common Expressions">Common Expressions</option><option value="Daily Communication">Daily Communication</option><option value="Essential Vocabulary">Essential Vocabulary</option><option value="Greetings & Politeness">Greetings & Politeness</option><option value="Time & Dates">Time & Dates</option><option value="Work & Business">Work & Business</option></select>
+        <select id="difficultyFilter"><option value="">All Difficulties</option><option value="Easy">Easy</option><option value="Medium">Medium</option><option value="Hard">Hard</option></select>
+    </div>
+    
+  
+    <div class="flashcard-wrapper">
+        <div class="flashcard" id="flashcard" onclick="toggleFlip()">
+            <div class="flashcard-face flashcard-front">
+                <div class="difficulty-badge" id="difficultyBadge"></div>
+                <div class="card-number" id="cardNumber"></div>
+                <div style="opacity: 0.9; margin-bottom: 20px; font-weight: 800;">QUESTION</div>
+                <div class="flashcard-content" id="questionContent"></div>
+            </div>
+            <div class="flashcard-face flashcard-back">
+                <div class="difficulty-badge" id="difficultyBadgeBack"></div>
+                <div class="card-number" id="cardNumberBack"></div>
+                <div style="opacity: 0.9; margin-bottom: 20px; font-weight: 800;">ANSWER</div>
+                <div class="flashcard-content" id="answerContent"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="navigation">
+        <button onclick="previousCard()" id="prevBtn"><strong>← Back</strong></button>
+        <!-- <button class="flip-btn" onclick="toggleFlip()">↻ Flip</button> -->
+        <button onclick="nextCard()" id="nextBtn"><strong>Next →</strong></button>
+    </div>
+    
+    <div class="action-buttons">
+        <button class="master-btn" onclick="markAsMastered()"><strong>✓</strong> Mastered</button>
+        <button class="weak-btn" onclick="markAsWeak()"><strong>✗</strong> Need Review</button>
+    </div>
+    
+    <div class="utility-buttons">
+        <button class="shuffle-btn" onclick="shuffleCards()">Shuffle</button>
+        <button class="reset-btn" onclick="resetProgress()">Reset All</button>
+    </div>
+    
+    <div class="shortcuts"><strong>Shortcuts</strong> SPACE=Flip | ←→=Nav | M=Master | W=Review</div>
+</div>
+
+<!-- Modal for Card Lists -->
+<div id="cardListModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">Card List</h2>
+            <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <div id="modalBody"></div>
+    </div>
+</div>
+
+<script>
+    // Sample flashcards data - replace with your CSV data
+        const flashcards = [
+        {id:1, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Bonjour' mean?", answer:"Hello / Good morning - the standard greeting in French"},
+        {id:2, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Bonsoir' mean?", answer:"Good evening - replaces bonjour in the evening"},
+        {id:3, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Bonne journée' mean?", answer:"Have a nice day"},
+        {id:4, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Bonne soirée' mean?", answer:"Have a nice evening"},
+        {id:5, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Au revoir' mean?", answer:"Goodbye"},
+        {id:6, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'À bientôt' mean?", answer:"See you soon"},
+        {id:7, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'À plus tard' mean?", answer:"See you later"},
+        {id:8, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Salut' mean?", answer:"Hi / Bye (informal)"},
+        {id:9, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Enchanté(e)' mean?", answer:"Nice to meet you / Delighted"},
+        {id:10, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Ravi(e) de vous rencontrer' mean?", answer:"Happy to meet you"},
+        {id:11, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Merci' mean?", answer:"Thank you"},
+        {id:12, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Merci beaucoup' mean?", answer:"Thank you very much"},
+        {id:13, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'De rien' mean?", answer:"You're welcome / It's nothing"},
+        {id:14, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Je vous en prie' mean?", answer:"You're welcome (formal)"},
+        {id:15, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'S'il vous plaît' mean?", answer:"Please (formal)"},
+        {id:16, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'S'il te plaît' mean?", answer:"Please (informal)"},
+        {id:17, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Excusez-moi' mean?", answer:"Excuse me (formal)"},
+        {id:18, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Pardon' mean?", answer:"Sorry / Pardon"},
+        {id:19, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Je suis désolé(e)' mean?", answer:"I am sorry"},
+        {id:20, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Pas de problème' mean?", answer:"No problem"},
+        {id:21, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Pas de souci' mean?", answer:"No worries"},
+        {id:22, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'Bien sûr' mean?", answer:"Of course"},
+        {id:23, category:"Greetings & Politeness", topic:"Basic Phrases", difficulty:"Easy", question:"What does 'D'accord' mean?", answer:"Okay / Agreed / Alright"},
+        {id:24, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'Comment ça va?' mean?", answer:"How are you? / How's it going? (informal)"},
+        {id:25, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'Comment allez-vous?' mean?", answer:"How are you? (formal)"},
+        {id:26, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'Ça va' mean?", answer:"I'm fine / It's going well (also used as a question)"},
+        {id:27, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'Ça va bien' mean?", answer:"It's going well"},
+        {id:28, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'Très bien, merci' mean?", answer:"Very well, thank you"},
+        {id:29, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'Pas mal' mean?", answer:"Not bad"},
+        {id:30, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'Comme ci, comme ça' mean?", answer:"So-so"},
+        {id:31, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'Ça roule?' mean?", answer:"How's it going? (very informal)"},
+        {id:32, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'Quoi de neuf?' mean?", answer:"What's new?"},
+        {id:33, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'Tout va bien' mean?", answer:"Everything is well"},
+        {id:34, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'Comment vous appelez-vous?' mean?", answer:"What is your name? (formal)"},
+        {id:35, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'Comment tu t'appelles?' mean?", answer:"What's your name? (informal)"},
+        {id:36, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'Je m'appelle...' mean?", answer:"My name is..."},
+        {id:37, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'Quel âge avez-vous?' mean?", answer:"How old are you? (formal)"},
+        {id:38, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'J'ai 30 ans' mean?", answer:"I am 30 years old"},
+        {id:39, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'D'où venez-vous?' mean?", answer:"Where are you from? (formal)"},
+        {id:40, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'Je viens de...' mean?", answer:"I come from... / I'm from..."},
+        {id:41, category:"Greetings & Politeness", topic:"Small Talk", difficulty:"Easy", question:"What does 'J'habite à...' mean?", answer:"I live in..."},
+        {id:42, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Je ne comprends pas' mean?", answer:"I don't understand"},
+        {id:43, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Je ne parle pas français' mean?", answer:"I don't speak French"},
+        {id:44, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Parlez-vous anglais?' mean?", answer:"Do you speak English? (formal)"},
+        {id:45, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Je voudrais...' mean?", answer:"I would like..."},
+        {id:46, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'J'ai besoin de...' mean?", answer:"I need..."},
+        {id:47, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Pouvez-vous m'aider?' mean?", answer:"Can you help me? (formal)"},
+        {id:48, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Peux-tu m'aider?' mean?", answer:"Can you help me? (informal)"},
+        {id:49, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Pouvez-vous répéter?' mean?", answer:"Can you repeat? (formal)"},
+        {id:50, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Répétez, s'il vous plaît' mean?", answer:"Please repeat"},
+        {id:51, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Pouvez-vous parler plus lentement?' mean?", answer:"Can you speak slower?"},
+        {id:52, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Je suis perdu(e)' mean?", answer:"I'm lost"},
+        {id:53, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Où est...?' mean?", answer:"Where is...?"},
+        {id:54, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Combien ça coûte?' mean?", answer:"How much does it cost?"},
+        {id:55, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'C'est combien?' mean?", answer:"How much is it?"},
+        {id:56, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Oui' mean?", answer:"Yes"},
+        {id:57, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Non' mean?", answer:"No"},
+        {id:58, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Peut-être' mean?", answer:"Maybe / Perhaps"},
+        {id:59, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Je ne sais pas' mean?", answer:"I don't know"},
+        {id:60, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'Ça dépend' mean?", answer:"It depends"},
+        {id:61, category:"Daily Communication", topic:"Essential Phrases", difficulty:"Easy", question:"What does 'C'est-à-dire' mean?", answer:"That is to say / I mean"},
+        {id:62, category:"Daily Communication", topic:"Restaurant & Food", difficulty:"Easy", question:"What does 'La carte, s'il vous plaît' mean?", answer:"The menu, please"},
+        {id:63, category:"Daily Communication", topic:"Restaurant & Food", difficulty:"Easy", question:"What does 'L'addition, s'il vous plaît' mean?", answer:"The check/bill, please"},
+        {id:64, category:"Daily Communication", topic:"Restaurant & Food", difficulty:"Easy", question:"What does 'Une table pour deux' mean?", answer:"A table for two"},
+        {id:65, category:"Daily Communication", topic:"Restaurant & Food", difficulty:"Easy", question:"What does 'Un verre d'eau' mean?", answer:"A glass of water"},
+        {id:66, category:"Daily Communication", topic:"Restaurant & Food", difficulty:"Easy", question:"What does 'Je voudrais commander' mean?", answer:"I would like to order"},
+        {id:67, category:"Daily Communication", topic:"Restaurant & Food", difficulty:"Easy", question:"What does 'Qu'est-ce que vous recommandez?' mean?", answer:"What do you recommend?"},
+        {id:68, category:"Daily Communication", topic:"Restaurant & Food", difficulty:"Easy", question:"What does 'C'est délicieux' mean?", answer:"It's delicious"},
+        {id:69, category:"Daily Communication", topic:"Restaurant & Food", difficulty:"Easy", question:"What does 'L'addition' mean?", answer:"The bill/check"},
+        {id:70, category:"Daily Communication", topic:"Restaurant & Food", difficulty:"Easy", question:"What does 'À emporter' mean?", answer:"To go / Takeout"},
+        {id:71, category:"Daily Communication", topic:"Restaurant & Food", difficulty:"Easy", question:"What does 'Sans sucre' mean?", answer:"Without sugar"},
+        {id:72, category:"Daily Communication", topic:"Restaurant & Food", difficulty:"Easy", question:"What does 'Avec du lait' mean?", answer:"With milk"},
+        {id:73, category:"Daily Communication", topic:"Restaurant & Food", difficulty:"Easy", question:"What does 'Encore du vin' mean?", answer:"More wine"},
+        {id:74, category:"Daily Communication", topic:"Restaurant & Food", difficulty:"Easy", question:"What does 'J'ai faim' mean?", answer:"I'm hungry"},
+        {id:75, category:"Daily Communication", topic:"Restaurant & Food", difficulty:"Easy", question:"What does 'J'ai soif' mean?", answer:"I'm thirsty"},
+        {id:76, category:"Daily Communication", topic:"Restaurant & Food", difficulty:"Easy", question:"What does 'Bon appétit' mean?", answer:"Enjoy your meal"},
+        {id:77, category:"Daily Communication", topic:"Restaurant & Food", difficulty:"Easy", question:"What does 'Santé' mean?", answer:"Cheers / To your health"},
+        {id:78, category:"Daily Communication", topic:"Shopping", difficulty:"Easy", question:"What does 'C'est trop cher' mean?", answer:"It's too expensive"},
+        {id:79, category:"Daily Communication", topic:"Shopping", difficulty:"Easy", question:"What does 'Je cherche...' mean?", answer:"I'm looking for..."},
+        {id:80, category:"Daily Communication", topic:"Shopping", difficulty:"Easy", question:"What does 'Avez-vous...?' mean?", answer:"Do you have...?"},
+        {id:81, category:"Daily Communication", topic:"Shopping", difficulty:"Easy", question:"What does 'Quelle taille?' mean?", answer:"What size?"},
+        {id:82, category:"Daily Communication", topic:"Shopping", difficulty:"Easy", question:"What does 'Je le prends' mean?", answer:"I'll take it"},
+        {id:83, category:"Daily Communication", topic:"Shopping", difficulty:"Easy", question:"What does 'Puis-je l'essayer?' mean?", answer:"Can I try it on?"},
+        {id:84, category:"Daily Communication", topic:"Shopping", difficulty:"Easy", question:"What does 'Est-ce que je peux l'essayer?' mean?", answer:"Can I try it?"},
+        {id:85, category:"Daily Communication", topic:"Shopping", difficulty:"Easy", question:"What does 'C'est en solde' mean?", answer:"It's on sale"},
+        {id:86, category:"Daily Communication", topic:"Shopping", difficulty:"Easy", question:"What does 'Le reçu' mean?", answer:"The receipt"},
+        {id:87, category:"Daily Communication", topic:"Shopping", difficulty:"Easy", question:"What does 'La caisse' mean?", answer:"The cash register / checkout"},
+        {id:88, category:"Daily Communication", topic:"Shopping", difficulty:"Easy", question:"What does 'Par carte' mean?", answer:"By card"},
+        {id:89, category:"Daily Communication", topic:"Shopping", difficulty:"Easy", question:"What does 'En espèces' mean?", answer:"In cash"},
+        {id:90, category:"Daily Communication", topic:"Transportation & Directions", difficulty:"Easy", question:"What does 'Où est la gare?' mean?", answer:"Where is the train station?"},
+        {id:91, category:"Daily Communication", topic:"Transportation & Directions", difficulty:"Easy", question:"What does 'Je vais à...' mean?", answer:"I'm going to..."},
+        {id:92, category:"Daily Communication", topic:"Transportation & Directions", difficulty:"Easy", question:"What does 'Comment est-ce que je vais à...?' mean?", answer:"How do I get to...?"},
+        {id:93, category:"Daily Communication", topic:"Transportation & Directions", difficulty:"Easy", question:"What does 'Pour aller à...?' mean?", answer:"To go to...? / How to get to...?"},
+        {id:94, category:"Daily Communication", topic:"Transportation & Directions", difficulty:"Easy", question:"What does 'Tournez à gauche' mean?", answer:"Turn left"},
+        {id:95, category:"Daily Communication", topic:"Transportation & Directions", difficulty:"Easy", question:"What does 'Tournez à droite' mean?", answer:"Turn right"},
+        {id:96, category:"Daily Communication", topic:"Transportation & Directions", difficulty:"Easy", question:"What does 'Allez tout droit' mean?", answer:"Go straight"},
+        {id:97, category:"Daily Communication", topic:"Transportation & Directions", difficulty:"Easy", question:"What does 'Je prends le métro' mean?", answer:"I take the metro/subway"},
+        {id:98, category:"Daily Communication", topic:"Transportation & Directions", difficulty:"Easy", question:"What does 'Je prends le bus' mean?", answer:"I take the bus"},
+        {id:99, category:"Daily Communication", topic:"Transportation & Directions", difficulty:"Easy", question:"What does 'En voiture' mean?", answer:"By car"},
+        {id:100, category:"Daily Communication", topic:"Transportation & Directions", difficulty:"Easy", question:"What does 'À vélo' mean?", answer:"By bike"},
+        {id:101, category:"Daily Communication", topic:"Transportation & Directions", difficulty:"Easy", question:"What does 'À pied' mean?", answer:"On foot / By foot"},
+        {id:102, category:"Daily Communication", topic:"Transportation & Directions", difficulty:"Easy", question:"What does 'L'arrêt de bus' mean?", answer:"The bus stop"},
+        {id:103, category:"Daily Communication", topic:"Transportation & Directions", difficulty:"Easy", question:"What does 'L'aéroport' mean?", answer:"The airport"},
+        {id:104, category:"Daily Communication", topic:"Transportation & Directions", difficulty:"Easy", question:"What does 'Un billet' mean?", answer:"A ticket"},
+        {id:105, category:"Daily Communication", topic:"Feelings & States", difficulty:"Easy", question:"What does 'J'ai chaud' mean?", answer:"I'm hot"},
+        {id:106, category:"Daily Communication", topic:"Feelings & States", difficulty:"Easy", question:"What does 'J'ai froid' mean?", answer:"I'm cold"},
+        {id:107, category:"Daily Communication", topic:"Feelings & States", difficulty:"Easy", question:"What does 'Je suis fatigué(e)' mean?", answer:"I'm tired"},
+        {id:108, category:"Daily Communication", topic:"Feelings & States", difficulty:"Easy", question:"What does 'Je me sens mal' mean?", answer:"I don't feel well"},
+        {id:109, category:"Daily Communication", topic:"Feelings & States", difficulty:"Easy", question:"What does 'Je ne me sens pas bien' mean?", answer:"I don't feel well"},
+        {id:110, category:"Daily Communication", topic:"Feelings & States", difficulty:"Easy", question:"What does 'J'ai mal à la tête' mean?", answer:"I have a headache"},
+        {id:111, category:"Daily Communication", topic:"Feelings & States", difficulty:"Easy", question:"What does 'Je suis malade' mean?", answer:"I'm sick"},
+        {id:112, category:"Daily Communication", topic:"Feelings & States", difficulty:"Easy", question:"What does 'J'ai besoin d'aide' mean?", answer:"I need help"},
+        {id:113, category:"Daily Communication", topic:"Feelings & States", difficulty:"Easy", question:"What does 'Au secours!' mean?", answer:"Help!"},
+        {id:114, category:"Daily Communication", topic:"Feelings & States", difficulty:"Easy", question:"What does 'C'est une urgence' mean?", answer:"It's an emergency"},
+        {id:115, category:"Daily Communication", topic:"Feelings & States", difficulty:"Easy", question:"What does 'Où est l'hôpital?' mean?", answer:"Where is the hospital?"},
+        {id:116, category:"Work & Business", topic:"Workplace Basics", difficulty:"Medium", question:"What does 'Je travaille comme...' mean?", answer:"I work as..."},
+        {id:117, category:"Work & Business", topic:"Workplace Basics", difficulty:"Medium", question:"What does 'Je suis...' (profession) mean?", answer:"I am... (profession)"},
+        {id:118, category:"Work & Business", topic:"Workplace Basics", difficulty:"Medium", question:"What does 'Je travaille dans l'informatique' mean?", answer:"I work in IT / technology"},
+        {id:119, category:"Work & Business", topic:"Workplace Basics", difficulty:"Medium", question:"What does 'Je cherche un emploi' mean?", answer:"I'm looking for a job"},
+        {id:120, category:"Work & Business", topic:"Workplace Basics", difficulty:"Medium", question:"What does 'J'ai une réunion' mean?", answer:"I have a meeting"},
+        {id:121, category:"Work & Business", topic:"Workplace Basics", difficulty:"Medium", question:"What does 'Je suis occupé(e)' mean?", answer:"I'm busy"},
+        {id:122, category:"Work & Business", topic:"Workplace Basics", difficulty:"Medium", question:"What does 'Que faites-vous dans la vie?' mean?", answer:"What do you do for a living?"},
+        {id:123, category:"Work & Business", topic:"Workplace Basics", difficulty:"Medium", question:"What does 'Quel est votre métier?' mean?", answer:"What is your profession?"},
+        {id:124, category:"Work & Business", topic:"Workplace Basics", difficulty:"Medium", question:"What does 'L'entreprise' mean?", answer:"The company"},
+        {id:125, category:"Work & Business", topic:"Workplace Basics", difficulty:"Medium", question:"What does 'Une société' mean?", answer:"A company"},
+        {id:126, category:"Work & Business", topic:"Workplace Basics", difficulty:"Medium", question:"What does 'Le bureau' mean?", answer:"The office"},
+        {id:127, category:"Work & Business", topic:"Workplace Basics", difficulty:"Medium", question:"What does 'Le travail' mean?", answer:"Work / The job"},
+        {id:128, category:"Work & Business", topic:"Workplace Basics", difficulty:"Medium", question:"What does 'Un emploi' mean?", answer:"A job / Employment"},
+        {id:129, category:"Work & Business", topic:"Workplace Basics", difficulty:"Medium", question:"What does 'Le patron / La patronne' mean?", answer:"The boss"},
+        {id:130, category:"Work & Business", topic:"Workplace Basics", difficulty:"Medium", question:"What does 'Le collègue' mean?", answer:"The colleague / coworker"},
+        {id:131, category:"Work & Business", topic:"Workplace Basics", difficulty:"Medium", question:"What does 'Une réunion' mean?", answer:"A meeting"},
+        {id:132, category:"Work & Business", topic:"Meetings & Communication", difficulty:"Medium", question:"What does 'Est-ce que tu peux m'aider?' mean?", answer:"Can you help me? (work context, informal)"},
+        {id:133, category:"Work & Business", topic:"Meetings & Communication", difficulty:"Medium", question:"What does 'Pouvez-vous m'aider?' mean?", answer:"Can you help me? (work context, formal)"},
+        {id:134, category:"Work & Business", topic:"Meetings & Communication", difficulty:"Medium", question:"What does 'Tu pourrais m'expliquer ça?' mean?", answer:"Could you explain this to me?"},
+        {id:135, category:"Work & Business", topic:"Meetings & Communication", difficulty:"Medium", question:"What does 'Je ne comprends pas ce document' mean?", answer:"I don't understand this document"},
+        {id:136, category:"Work & Business", topic:"Meetings & Communication", difficulty:"Medium", question:"What does 'Merci pour ton aide' mean?", answer:"Thank you for your help (informal)"},
+        {id:137, category:"Work & Business", topic:"Meetings & Communication", difficulty:"Medium", question:"What does 'Merci pour votre aide' mean?", answer:"Thank you for your help (formal)"},
+        {id:138, category:"Work & Business", topic:"Meetings & Communication", difficulty:"Medium", question:"What does 'Bon travail' mean?", answer:"Good work"},
+        {id:139, category:"Work & Business", topic:"Meetings & Communication", difficulty:"Medium", question:"What does 'Excellent travail' mean?", answer:"Excellent work"},
+        {id:140, category:"Work & Business", topic:"Meetings & Communication", difficulty:"Medium", question:"What does 'Le délai est trop court' mean?", answer:"The deadline is too short"},
+        {id:141, category:"Work & Business", topic:"Meetings & Communication", difficulty:"Medium", question:"What does 'Nous n'avons pas le temps' mean?", answer:"We don't have time"},
+        {id:142, category:"Work & Business", topic:"Meetings & Communication", difficulty:"Medium", question:"What does 'Il y a une erreur' mean?", answer:"There is a mistake"},
+        {id:143, category:"Work & Business", topic:"Meetings & Communication", difficulty:"Medium", question:"What does 'Il faudrait reporter cette réunion' mean?", answer:"We should reschedule this meeting"},
+        {id:144, category:"Work & Business", topic:"Meetings & Communication", difficulty:"Medium", question:"What does 'La réunion de travail' mean?", answer:"The work meeting"},
+        {id:145, category:"Work & Business", topic:"Meetings & Communication", difficulty:"Medium", question:"What does 'La salle de réunion' mean?", answer:"The meeting room"},
+        {id:146, category:"Work & Business", topic:"Meetings & Communication", difficulty:"Medium", question:"What does 'L'ordre du jour' mean?", answer:"The agenda"},
+        {id:147, category:"Work & Business", topic:"Meetings & Communication", difficulty:"Medium", question:"What does 'Prendre des notes' mean?", answer:"To take notes"},
+        {id:148, category:"Work & Business", topic:"Email & Letters", difficulty:"Medium", question:"What does 'Pièce jointe' mean?", answer:"Attachment (email)"},
+        {id:149, category:"Work & Business", topic:"Email & Letters", difficulty:"Medium", question:"What does 'Le destinataire' mean?", answer:"The recipient"},
+        {id:150, category:"Work & Business", topic:"Email & Letters", difficulty:"Medium", question:"What does 'L'objet' mean?", answer:"Subject (of email)"},
+        {id:151, category:"Work & Business", topic:"Email & Letters", difficulty:"Medium", question:"What does 'Merci de votre réponse' mean?", answer:"Thank you for your response"},
+        {id:152, category:"Work & Business", topic:"Email & Letters", difficulty:"Medium", question:"What does 'Cordialement' mean?", answer:"Sincerely / Kind regards (email closing)"},
+        {id:153, category:"Work & Business", topic:"Email & Letters", difficulty:"Medium", question:"What does 'En copie conforme' mean?", answer:"CC (Carbon copy)"},
+        {id:154, category:"Work & Business", topic:"Email & Letters", difficulty:"Medium", question:"What does 'Madame, Monsieur' mean?", answer:"Dear Sir/Madam (formal letter opening)"},
+        {id:155, category:"Work & Business", topic:"Email & Letters", difficulty:"Medium", question:"What does 'Veuillez agréer mes salutations' mean?", answer:"Please accept my regards (formal closing)"},
+        {id:156, category:"Work & Business", topic:"Job Interview", difficulty:"Medium", question:"What does 'Pouvez-vous me parler de vos études?' mean?", answer:"Can you tell me about your studies?"},
+        {id:157, category:"Work & Business", topic:"Job Interview", difficulty:"Medium", question:"What does 'Quels sont vos diplômes?' mean?", answer:"What are your degrees?"},
+        {id:158, category:"Work & Business", topic:"Job Interview", difficulty:"Medium", question:"What does 'Quelle est votre expérience professionnelle?' mean?", answer:"What is your professional experience?"},
+        {id:159, category:"Work & Business", topic:"Job Interview", difficulty:"Medium", question:"What does 'J'ai travaillé chez... pendant 4 ans' mean?", answer:"I worked at... for 4 years"},
+        {id:160, category:"Work & Business", topic:"Job Interview", difficulty:"Medium", question:"What does 'Je travaille pour... depuis 2 ans' mean?", answer:"I've been working for... for 2 years"},
+        {id:161, category:"Work & Business", topic:"Job Interview", difficulty:"Medium", question:"What does 'Quelles langues parlez-vous?' mean?", answer:"Which languages do you speak?"},
+        {id:162, category:"Work & Business", topic:"Job Interview", difficulty:"Medium", question:"What does 'Je parle couramment anglais' mean?", answer:"I speak English fluently"},
+        {id:163, category:"Work & Business", topic:"Job Interview", difficulty:"Medium", question:"What does 'J'ai des notions de français' mean?", answer:"I have basic knowledge of French"},
+        {id:164, category:"Work & Business", topic:"Job Interview", difficulty:"Medium", question:"What does 'Un entretien' mean?", answer:"An interview"},
+        {id:165, category:"Work & Business", topic:"Job Interview", difficulty:"Medium", question:"What does 'Une candidature' mean?", answer:"An application"},
+        {id:166, category:"Work & Business", topic:"Job Interview", difficulty:"Medium", question:"What does 'Une lettre de motivation' mean?", answer:"A cover letter"},
+        {id:167, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'Tout de suite' mean?", answer:"Right away / Immediately"},
+        {id:168, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'Tout à l'heure' mean?", answer:"Earlier / In a moment"},
+        {id:169, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'Tant pis' mean?", answer:"Too bad / Oh well"},
+        {id:170, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'Tant mieux' mean?", answer:"So much the better / That's great"},
+        {id:171, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'Pas du tout' mean?", answer:"Not at all"},
+        {id:172, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'Bonne chance' mean?", answer:"Good luck"},
+        {id:173, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'Bon courage' mean?", answer:"Good luck / Hang in there (for difficult tasks)"},
+        {id:174, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'Félicitations' mean?", answer:"Congratulations"},
+        {id:175, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'Avec plaisir' mean?", answer:"With pleasure"},
+        {id:176, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'Volontiers' mean?", answer:"Gladly / Willingly"},
+        {id:177, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'N'importe quoi' mean?", answer:"Whatever / Nonsense"},
+        {id:178, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'Ça marche' mean?", answer:"It works / That works / Sounds good"},
+        {id:179, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'Désolé pour tout à l'heure' mean?", answer:"Sorry about earlier"},
+        {id:180, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'En fait' mean?", answer:"In fact / Actually"},
+        {id:181, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'Par contre' mean?", answer:"On the other hand"},
+        {id:182, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'Surtout' mean?", answer:"Especially / Above all"},
+        {id:183, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'Bref' mean?", answer:"In short / To be brief"},
+        {id:184, category:"Common Expressions", topic:"Everyday Expressions", difficulty:"Easy", question:"What does 'Comme d'habitude' mean?", answer:"As usual"},
+        {id:185, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'Quelle heure est-il?' mean?", answer:"What time is it?"},
+        {id:186, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'Il est quelle heure?' mean?", answer:"What time is it?"},
+        {id:187, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'Il est trois heures' mean?", answer:"It's 3 o'clock"},
+        {id:188, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'Aujourd'hui' mean?", answer:"Today"},
+        {id:189, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'Demain' mean?", answer:"Tomorrow"},
+        {id:190, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'Hier' mean?", answer:"Yesterday"},
+        {id:191, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'Maintenant' mean?", answer:"Now"},
+        {id:192, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'Bientôt' mean?", answer:"Soon"},
+        {id:193, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'Déjà' mean?", answer:"Already"},
+        {id:194, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'Encore' mean?", answer:"Still / Again / More"},
+        {id:195, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'Toujours' mean?", answer:"Always / Still"},
+        {id:196, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'Jamais' mean?", answer:"Never"},
+        {id:197, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'Souvent' mean?", answer:"Often"},
+        {id:198, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'Parfois' mean?", answer:"Sometimes"},
+        {id:199, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'Ce week-end' mean?", answer:"This weekend"},
+        {id:200, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'La semaine prochaine' mean?", answer:"Next week"},
+        {id:201, category:"Time & Dates", topic:"Time Expressions", difficulty:"Easy", question:"What does 'Le mois prochain' mean?", answer:"Next month"},
+        {id:202, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'Le pain' mean?", answer:"Bread"},
+        {id:203, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'Le fromage' mean?", answer:"Cheese"},
+        {id:204, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'Le vin' mean?", answer:"Wine"},
+        {id:205, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'L'eau' mean?", answer:"Water"},
+        {id:206, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'Le café' mean?", answer:"Coffee"},
+        {id:207, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'Le thé' mean?", answer:"Tea"},
+        {id:208, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'La viande' mean?", answer:"Meat"},
+        {id:209, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'Les légumes' mean?", answer:"Vegetables"},
+        {id:210, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'Les fruits' mean?", answer:"Fruits"},
+        {id:211, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'Le lait' mean?", answer:"Milk"},
+        {id:212, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'Le sucre' mean?", answer:"Sugar"},
+        {id:213, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'Le sel' mean?", answer:"Salt"},
+        {id:214, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'La maison' mean?", answer:"House / Home"},
+        {id:215, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'L'appartement' mean?", answer:"Apartment"},
+        {id:216, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'La chambre' mean?", answer:"Bedroom / Room"},
+        {id:217, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'La cuisine' mean?", answer:"Kitchen"},
+        {id:218, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'Le salon' mean?", answer:"Living room"},
+        {id:219, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'La salle de bain' mean?", answer:"Bathroom"},
+        {id:220, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'La ville' mean?", answer:"City"},
+        {id:221, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'Le village' mean?", answer:"Village"},
+        {id:222, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'La rue' mean?", answer:"Street"},
+        {id:223, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'L'hôtel' mean?", answer:"Hotel"},
+        {id:224, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'Le restaurant' mean?", answer:"Restaurant"},
+        {id:225, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'Le magasin' mean?", answer:"Store / Shop"},
+        {id:226, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'La banque' mean?", answer:"Bank"},
+        {id:227, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'La pharmacie' mean?", answer:"Pharmacy"},
+        {id:228, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'L'hôpital' mean?", answer:"Hospital"},
+        {id:229, category:"Essential Vocabulary", topic:"Common Words", difficulty:"Easy", question:"What does 'L'école' mean?", answer:"School"},
+        {id:230, category:"Essential Vocabulary", topic:"Numbers", difficulty:"Easy", question:"What are French numbers 0-10?", answer:"zéro, un, deux, trois, quatre, cinq, six, sept, huit, neuf, dix"},
+        {id:231, category:"Essential Vocabulary", topic:"Numbers", difficulty:"Easy", question:"What are French numbers 11-20?", answer:"onze, douze, treize, quatorze, quinze, seize, dix-sept, dix-huit, dix-neuf, vingt"},
+        {id:232, category:"Essential Vocabulary", topic:"Numbers", difficulty:"Easy", question:"What are key French numbers 20-100?", answer:"vingt (20), trente (30), quarante (40), cinquante (50), soixante (60), soixante-dix (70), quatre-vingts (80), quatre-vingt-dix (90), cent (100)"},
+        {id:233, category:"Essential Vocabulary", topic:"Days & Months", difficulty:"Easy", question:"What are the days of the week in French?", answer:"lundi (Monday), mardi (Tuesday), mercredi (Wednesday), jeudi (Thursday), vendredi (Friday), samedi (Saturday), dimanche (Sunday)"},
+        {id:234, category:"Essential Vocabulary", topic:"Days & Months", difficulty:"Easy", question:"What are the months in French?", answer:"janvier, février, mars, avril, mai, juin, juillet, août, septembre, octobre, novembre, décembre"},
+        {id:235, category:"Essential Vocabulary", topic:"Weather", difficulty:"Easy", question:"What does 'Quel temps fait-il?' mean?", answer:"What's the weather like?"},
+        {id:236, category:"Essential Vocabulary", topic:"Weather", difficulty:"Easy", question:"What does 'Il fait beau' mean?", answer:"It's nice/beautiful weather"},
+        {id:237, category:"Essential Vocabulary", topic:"Weather", difficulty:"Easy", question:"What does 'Il fait mauvais' mean?", answer:"It's bad weather"},
+        {id:238, category:"Essential Vocabulary", topic:"Weather", difficulty:"Easy", question:"What does 'Il fait chaud' mean?", answer:"It's hot"},
+        {id:239, category:"Essential Vocabulary", topic:"Weather", difficulty:"Easy", question:"What does 'Il fait froid' mean?", answer:"It's cold"},
+        {id:240, category:"Essential Vocabulary", topic:"Weather", difficulty:"Easy", question:"What does 'Il fait soleil' mean?", answer:"It's sunny"},
+        {id:241, category:"Essential Vocabulary", topic:"Weather", difficulty:"Easy", question:"What does 'Il pleut' mean?", answer:"It's raining"},
+        {id:242, category:"Essential Vocabulary", topic:"Weather", difficulty:"Easy", question:"What does 'Il neige' mean?", answer:"It's snowing"},
+        {id:243, category:"Essential Vocabulary", topic:"Weather", difficulty:"Easy", question:"What does 'Il y a du vent' mean?", answer:"It's windy"},
+        {id:244, category:"Daily Communication", topic:"Weekend & Activities", difficulty:"Medium", question:"What does 'Qu'est-ce que tu as fait ce week-end?' mean?", answer:"What did you do this weekend?"},
+        {id:245, category:"Daily Communication", topic:"Weekend & Activities", difficulty:"Medium", question:"What does 'Qu'est-ce que tu fais ce week-end?' mean?", answer:"What are you doing this weekend?"},
+        {id:246, category:"Daily Communication", topic:"Weekend & Activities", difficulty:"Medium", question:"What does 'Tu fais quoi ce week-end?' mean?", answer:"What are you doing this weekend? (informal)"},
+        {id:247, category:"Daily Communication", topic:"Weekend & Activities", difficulty:"Medium", question:"What does 'Je suis allé(e) à...' mean?", answer:"I went to..."},
+        {id:248, category:"Daily Communication", topic:"Weekend & Activities", difficulty:"Medium", question:"What does 'Je suis resté(e) à la maison' mean?", answer:"I stayed home"},
+        {id:249, category:"Daily Communication", topic:"Weekend & Activities", difficulty:"Medium", question:"What does 'Je me suis bien amusé(e)' mean?", answer:"I had a good time"},
+        {id:250, category:"Daily Communication", topic:"Weekend & Activities", difficulty:"Medium", question:"What does 'J'ai passé un bon moment' mean?", answer:"I had a good time"},
+        {id:251, category:"Daily Communication", topic:"Weekend & Activities", difficulty:"Medium", question:"What does 'Que faites-vous dans votre temps libre?' mean?", answer:"What do you do in your free time?"},
+        {id:252, category:"Daily Communication", topic:"Weekend & Activities", difficulty:"Medium", question:"What does 'J'aime...' mean?", answer:"I like..."},
+        {id:253, category:"Daily Communication", topic:"Weekend & Activities", difficulty:"Medium", question:"What does 'J'adore...' mean?", answer:"I love..."},
+        {id:254, category:"Daily Communication", topic:"Weekend & Activities", difficulty:"Medium", question:"What does 'Je n'aime pas...' mean?", answer:"I don't like..."},
+        {id:255, category:"Daily Communication", topic:"Weekend & Activities", difficulty:"Medium", question:"What does 'Je déteste...' mean?", answer:"I hate..."},
+        {id:256, category:"Essential Vocabulary", topic:"Family & People", difficulty:"Easy", question:"What does 'La famille' mean?", answer:"Family"},
+        {id:257, category:"Essential Vocabulary", topic:"Family & People", difficulty:"Easy", question:"What does 'Le père' mean?", answer:"Father"},
+        {id:258, category:"Essential Vocabulary", topic:"Family & People", difficulty:"Easy", question:"What does 'La mère' mean?", answer:"Mother"},
+        {id:259, category:"Essential Vocabulary", topic:"Family & People", difficulty:"Easy", question:"What does 'Les parents' mean?", answer:"Parents"},
+        {id:260, category:"Essential Vocabulary", topic:"Family & People", difficulty:"Easy", question:"What does 'Le frère' mean?", answer:"Brother"},
+        {id:261, category:"Essential Vocabulary", topic:"Family & People", difficulty:"Easy", question:"What does 'La sœur' mean?", answer:"Sister"},
+        {id:262, category:"Essential Vocabulary", topic:"Family & People", difficulty:"Easy", question:"What does 'Le fils' mean?", answer:"Son"},
+        {id:263, category:"Essential Vocabulary", topic:"Family & People", difficulty:"Easy", question:"What does 'La fille' mean?", answer:"Daughter"},
+        {id:264, category:"Essential Vocabulary", topic:"Family & People", difficulty:"Easy", question:"What does 'Les enfants' mean?", answer:"Children"},
+        {id:265, category:"Essential Vocabulary", topic:"Family & People", difficulty:"Easy", question:"What does 'Le mari' mean?", answer:"Husband"},
+        {id:266, category:"Essential Vocabulary", topic:"Family & People", difficulty:"Easy", question:"What does 'La femme' mean?", answer:"Wife / Woman"},
+        {id:267, category:"Essential Vocabulary", topic:"Family & People", difficulty:"Easy", question:"What does 'L'ami / L'amie' mean?", answer:"Friend (male/female)"},
+        {id:268, category:"Essential Vocabulary", topic:"Family & People", difficulty:"Easy", question:"What does 'Les grands-parents' mean?", answer:"Grandparents"},
+        {id:269, category:"Essential Vocabulary", topic:"Family & People", difficulty:"Easy", question:"What does 'L'homme' mean?", answer:"Man"},
+        {id:270, category:"Essential Vocabulary", topic:"Family & People", difficulty:"Easy", question:"What does 'Le garçon' mean?", answer:"Boy"},
+        {id:271, category:"Essential Vocabulary", topic:"Family & People", difficulty:"Easy", question:"What does 'Avez-vous des frères et sœurs?' mean?", answer:"Do you have siblings?"},
+        {id:272, category:"Essential Vocabulary", topic:"Colors", difficulty:"Easy", question:"What does 'Rouge' mean?", answer:"Red"},
+        {id:273, category:"Essential Vocabulary", topic:"Colors", difficulty:"Easy", question:"What does 'Bleu' mean?", answer:"Blue"},
+        {id:274, category:"Essential Vocabulary", topic:"Colors", difficulty:"Easy", question:"What does 'Vert' mean?", answer:"Green"},
+        {id:275, category:"Essential Vocabulary", topic:"Colors", difficulty:"Easy", question:"What does 'Jaune' mean?", answer:"Yellow"},
+        {id:276, category:"Essential Vocabulary", topic:"Colors", difficulty:"Easy", question:"What does 'Noir' mean?", answer:"Black"},
+        {id:277, category:"Essential Vocabulary", topic:"Colors", difficulty:"Easy", question:"What does 'Blanc' mean?", answer:"White"},
+        {id:278, category:"Essential Vocabulary", topic:"Colors", difficulty:"Easy", question:"What does 'Gris' mean?", answer:"Gray"},
+        {id:279, category:"Essential Vocabulary", topic:"Colors", difficulty:"Easy", question:"What does 'Rose' mean?", answer:"Pink"},
+        {id:280, category:"Essential Vocabulary", topic:"Colors", difficulty:"Easy", question:"What does 'Orange' mean?", answer:"Orange"},
+        {id:281, category:"Essential Vocabulary", topic:"Colors", difficulty:"Easy", question:"What does 'Violet' mean?", answer:"Purple"},
+        {id:282, category:"Essential Vocabulary", topic:"Colors", difficulty:"Easy", question:"What does 'De quelle couleur est-ce?' mean?", answer:"What color is it?"},
+        {id:283, category:"Work & Business", topic:"Phone Calls", difficulty:"Medium", question:"What does 'Allô?' mean?", answer:"Hello? (on the phone only)"},
+        {id:284, category:"Work & Business", topic:"Phone Calls", difficulty:"Medium", question:"What does 'C'est bien...?' mean?", answer:"Is this...? (confirming who you're calling)"},
+        {id:285, category:"Work & Business", topic:"Phone Calls", difficulty:"Medium", question:"What does 'Je cherche à joindre...' mean?", answer:"I'm trying to reach..."},
+        {id:286, category:"Work & Business", topic:"Phone Calls", difficulty:"Medium", question:"What does 'Ne quittez pas' mean?", answer:"Hold the line / Hold on"},
+        {id:287, category:"Work & Business", topic:"Phone Calls", difficulty:"Medium", question:"What does 'Je vous le passe' mean?", answer:"I'll put you through to him"},
+        {id:288, category:"Work & Business", topic:"Phone Calls", difficulty:"Medium", question:"What does 'La ligne est occupée' mean?", answer:"The line is busy"},
+        {id:289, category:"Work & Business", topic:"Phone Calls", difficulty:"Medium", question:"What does 'Est-ce que je peux prendre un message?' mean?", answer:"Can I take a message?"},
+        {id:290, category:"Work & Business", topic:"Phone Calls", difficulty:"Medium", question:"What does 'Pourriez-vous rappeler plus tard?' mean?", answer:"Could you call back later?"},
+        {id:291, category:"Work & Business", topic:"Phone Calls", difficulty:"Medium", question:"What does 'Est-ce que vous m'entendez bien?' mean?", answer:"Can you hear me well?"},
+        {id:292, category:"Work & Business", topic:"Phone Calls", difficulty:"Medium", question:"What does 'La connexion est très mauvaise' mean?", answer:"The connection is very bad"},
+    ];
+    
+    // =========================
+    // Runtime state
+    // =========================
+    let currentIndex = 0;                // index within filteredCards
+    let filteredCards = [];              // view list (changes with filters/shuffle)
+    let isFlipped = false;               // UI flip state
+    let masteredCards = new Set();       // persistent set of mastered IDs
+    let weakCards = new Set();           // persistent set of review IDs
+
+    // Single storage key for everything (lists + last position)
+    const STORAGE_KEY = 'az900Progress200';
+
+    // =========================
+    // App bootstrap
+    // =========================
+    function init() {
+        filteredCards = [...flashcards];
+
+        // Load lists + last card position
+        loadProgress();
+
+        // Try to restore the last viewed card index inside filtered set
+        const savedPayload = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        if (Number.isInteger(savedPayload.currentIndex)) {
+            currentIndex = Math.min(Math.max(0, savedPayload.currentIndex), filteredCards.length - 1);
+        }
+
+        displayCard();
+        updateListCounts();
+
+        // Wire filters + keyboard
+        document.getElementById('categoryFilter').addEventListener('change', filterCards);
+        document.getElementById('difficultyFilter').addEventListener('change', filterCards);
+        document.addEventListener('keydown', handleKeyboard);
+    }
+    
+    // =========================
+    // Persistence
+    // =========================
+    function loadProgress() {
+        // Load mastered/review sets from a single payload
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            const p = JSON.parse(saved);
+            masteredCards = new Set(p.mastered || []);
+            weakCards = new Set(p.weak || []);
+        } else {
+            masteredCards = new Set();
+            weakCards = new Set();
+        }
+    }
+
+    function saveProgress() {
+        // Persist both lists and last position together
+        const payload = {
+            mastered: Array.from(masteredCards),
+            weak: Array.from(weakCards),
+            currentIndex,
+            lastUpdated: new Date().toISOString()
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+        updateListCounts();
+    }
+    
+    // =========================
+    // UI Update helpers
+    // =========================
+    function updateListCounts() {
+        // Update counters in header and on buttons (if present)
+        document.getElementById('weakCards').textContent = weakCards.size;
+        document.getElementById('masteredCards').textContent = masteredCards.size;
+        const rc = document.getElementById('reviewCount'); if (rc) rc.textContent = weakCards.size;
+        const mc = document.getElementById('masteredCount'); if (mc) mc.textContent = masteredCards.size;
+    }
+
+    function displayCard() {
+        if (!filteredCards.length) {
+            document.getElementById('questionContent').textContent = 'No cards match filters';
+            return;
+        }
+        
+        const c = filteredCards[currentIndex];
+        document.getElementById('questionContent').textContent = c.question;
+        document.getElementById('answerContent').textContent = c.answer;
+        document.getElementById('cardNumber').textContent = `${currentIndex+1}/${filteredCards.length}`;
+        document.getElementById('cardNumberBack').textContent = `${currentIndex+1}/${filteredCards.length}`;
+        document.getElementById('categoryDisplay').textContent = c.category;
+        document.getElementById('topicDisplay').textContent = c.topic;
+        
+        ['difficultyBadge', 'difficultyBadgeBack'].forEach(id => {
+            const el = document.getElementById(id);
+            el.textContent = c.difficulty;
+            el.className = `difficulty-badge difficulty-${c.difficulty.toLowerCase()}`;
+        });
+        
+        document.getElementById('percentComplete').textContent = Math.round((currentIndex+1)/filteredCards.length*100) + '%';
+        document.getElementById('progressFill').style.width = ((currentIndex+1)/filteredCards.length*100) + '%';
+        document.getElementById('currentCard').textContent = currentIndex + 1;
+        document.getElementById('prevBtn').disabled = currentIndex === 0;
+        document.getElementById('nextBtn').disabled = currentIndex === filteredCards.length - 1;
+        
+        isFlipped = false;
+        document.getElementById('flashcard').classList.remove('flipped');
+
+        // Update stats and persist current position
+        updateStats();
+        saveProgress();
+    }
+    
+    function updateStats() {
+        document.getElementById('masteredCards').textContent = masteredCards.size;
+        document.getElementById('weakCards').textContent = weakCards.size;
+    }
+    
+    // =========================
+    // Navigation / Actions
+    // =========================
+    function nextCard() {
+        if (currentIndex < filteredCards.length-1) {
+            currentIndex++;
+            displayCard();
+        }
+    }
+    
+    function previousCard() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            displayCard();
+        }
+    }
+    
+    function toggleFlip() {
+        isFlipped = !isFlipped;
+        document.getElementById('flashcard').classList.toggle('flipped');
+    }
+    
+    function markAsMastered() {
+        const c = filteredCards[currentIndex];
+        masteredCards.add(c.id);      // add to mastered set
+        weakCards.delete(c.id);       // ensure it leaves review set
+        saveProgress();
+        if (currentIndex < filteredCards.length-1) nextCard();
+    }
+    
+    function markAsWeak() {
+        const c = filteredCards[currentIndex];
+        weakCards.add(c.id);          // add to review set
+        masteredCards.delete(c.id);   // ensure it leaves mastered set
+        saveProgress();
+        if (currentIndex < filteredCards.length-1) nextCard();
+    }
+    
+    function jumpToCard() {
+        const input = document.getElementById('jumpInput');
+        const cardNum = parseInt(input.value);
+        if (cardNum >= 1 && cardNum <= filteredCards.length) {
+            currentIndex = cardNum - 1;
+            displayCard();
+            input.value = '';
+        } else {
+            alert(`Please enter a number between 1 and ${filteredCards.length}`);
+        }
+    }
+    
+    // =========================
+    // Lists + Modal
+    // =========================
+    function showReviewList() {
+        const list = flashcards.filter(c => weakCards.has(c.id));
+        showCardListModal('Cards Marked for Review', list);
+    }
+    
+    function showMasteredList() {
+        const list = flashcards.filter(c => masteredCards.has(c.id));
+        showCardListModal('Mastered Cards', list);
+    }
+    
+    function showCardListModal(title, cards) {
+        document.getElementById('modalTitle').textContent = title;
+        const modalBody = document.getElementById('modalBody');
+        
+        if (cards.length === 0) {
+            modalBody.innerHTML = '<div class="empty-list">No cards in this list yet</div>';
+        } else {
+            let html = '<ul class="card-list">';
+            for (const card of cards) {
+                const snippet = card.question.length > 80 ? card.question.slice(0,80) + '…' : card.question;
+                html += `<li onclick="jumpToCardId(${card.id})">
+                    <strong>Card #${card.id} -  ${card.category}</strong>
+                    <div>${snippet}</div>
+                </li>`;
+            }
+            html += '</ul>';
+            modalBody.innerHTML = html;
+        }
+        document.getElementById('cardListModal').style.display = 'block';
+    }
+    
+    function closeModal() {
+        document.getElementById('cardListModal').style.display = 'none';
+    }
+
+    // Jump by absolute card ID (works even if filters hide it)
+    function jumpToCardId(cardId) {
+        // If current filters hide the target, clear filters so we can show it
+        let idx = filteredCards.findIndex(c => c.id === cardId);
+        if (idx === -1) {
+            filteredCards = [...flashcards];
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('difficultyFilter').value = '';
+            document.getElementById('totalCards').textContent = filteredCards.length;
+            idx = filteredCards.findIndex(c => c.id === cardId);
+        }
+        if (idx !== -1) {
+            currentIndex = idx;
+            displayCard();
+        }
+        closeModal();
+    }
+    
+    // =========================
+    // Utilities
+    // =========================
+    function shuffleCards() {
+        for(let i=filteredCards.length-1;i>0;i--){
+            const j=Math.floor(Math.random()*(i+1));
+            [filteredCards[i],filteredCards[j]]=[filteredCards[j],filteredCards[i]];
+        }
+        currentIndex=0;
+        displayCard();
+    }
+    
+    function resetProgress() {
+        if(confirm('Reset all progress? This will clear mastered and review lists.')){
+            masteredCards.clear();
+            weakCards.clear();
+            currentIndex = 0;
+            // Clear our single key instead of scattered keys
+            localStorage.removeItem(STORAGE_KEY);
+            saveProgress();
+            updateStats();
+            displayCard();
+        }
+    }
+    
+    function filterCards() {
+        const cat=document.getElementById('categoryFilter').value;
+        const diff=document.getElementById('difficultyFilter').value;
+        filteredCards=flashcards.filter(c=>(!cat||c.category===cat)&&(!diff||c.difficulty===diff));
+        currentIndex=0;
+        document.getElementById('totalCards').textContent=filteredCards.length;
+        displayCard();
+    }
+    
+    function handleKeyboard(e) {
+        if (e.code === 'Space') { e.preventDefault(); toggleFlip(); }
+        else if (e.code === 'ArrowRight') nextCard();
+        else if (e.code === 'ArrowLeft') previousCard();
+        else if (e.key.toLowerCase() === 'm') markAsMastered();
+        else if (e.key.toLowerCase() === 'w') markAsWeak();
+    }
+    
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('cardListModal');
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+    
+    window.onload = init;
+</script>
+
+</body>
+</html>
