@@ -1,0 +1,463 @@
+<style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #002b49 30%, #00558c 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        /* Container & Header */
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            color: rgba(0, 153, 255, 0.7);
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            font-size: clamp(1.8em, 5vw, 2.5em);
+            margin-bottom: 1px;
+            text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.95);
+            opacity: 0.9;
+        }
+
+        header p {
+            font-size: clamp(0.95em, 3vw, 1.1em);
+            opacity: 0.5;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+
+        }
+
+        .stat-box {
+            background: rgb(0, 36, 61);
+            padding: 15px 10px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: inset 0 0px 5px rgb(0, 0, 0);
+        }
+
+        .stat-box h3 {
+            color: #8fa3ff;
+            font-size: clamp(1.4em, 4vw, 2em);
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .stat-box p {
+            color: #666;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .stat-box.mastered h3 {
+            color: #4caf50;
+        }
+
+        .stat-box.weak h3 {
+            color: #ff9800;
+        }
+
+
+
+
+        /* List View Buttons */
+        .list-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .list-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .list-btn.review {
+            background: linear-gradient(135deg, #ff9800, #ffa726);
+            color: white;
+        }
+
+        .list-btn.mastered {
+            background: linear-gradient(135deg, #4caf50, #66bb6a);
+            color: white;
+
+        }
+
+
+        /* Jump to Card Section */
+        .jump-section {
+            height: 60px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .jump-section label {
+            color: rgb(255, 255, 255);
+            font-weight: 600;
+        }
+
+        .jump-section input {
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            width: 120px;
+            font-size: 1em;
+        }
+
+        .jump-section button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: white;
+            color: #667eea;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .jump-section button:hover {
+            background: #f0f0f0;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50px;
+            overflow: hidden;
+            margin-bottom: 5px;
+            box-shadow: inset 0 0px 10px rgb(0, 0, 0);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6efff5, #00998c);
+            transition: width 0.4s;
+
+        }
+
+        /* Card Info */
+        .card-info {
+            display: flex;
+            justify-content: space-between;
+            color: white;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 5px;
+            font-weight: 500;
+        }
+
+        /* Filters */
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5px;
+            margin-bottom: 20px;
+
+        }
+
+        select {
+            color: #e0e0e0;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            background-color: #002139;
+            box-shadow: inset 0 0px 5px rgb(0, 0, 0);
+        }
+
+        /* Flashcard */
+        .flashcard-wrapper {
+            perspective: 1000px;
+            margin-bottom: 20px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+        }
+
+        .flashcard {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            overflow-y: auto;
+        }
+
+        .flashcard-front {
+            background: linear-gradient(135deg, #8bb8e8 0%, #002b49 100%);
+            color: white;
+        }
+
+        .flashcard-back {
+            background: linear-gradient(135deg, #d2ffc0 5%, #7a9a01 100%);
+            color: rgb(0, 0, 0);
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-content {
+            font-size: 1.2em;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .card-number {
+            position: absolute;
+            top: 15px;
+            right: 18px;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-weight: 700;
+        }
+
+        .difficulty-badge {
+            position: absolute;
+            top: 15px;
+            left: 18px;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .difficulty-easy {
+            background: #4caf50;
+            color: white;
+        }
+
+        .difficulty-medium {
+            background: #ff9800;
+            color: white;
+        }
+
+        .difficulty-hard {
+            background: #f44336;
+            color: white;
+        }
+
+        /* Navigation */
+        .navigation {
+            height: 50px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 30px;
+            align-self: center;
+
+        }
+
+        button {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 10px;
+            background: white;
+            color: #667eea;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* .flip-btn { 
+        background: linear-gradient(135deg, #4caf50, #45a049); 
+        color: white; 
+    } */
+
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .master-btn {
+            background: linear-gradient(135deg, #4caf50, #66bb6a);
+            color: white;
+        }
+
+        .weak-btn {
+            background: linear-gradient(135deg, #ff9800, #ffa726);
+            color: white;
+        }
+
+        /* Utility */
+        .utility-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .shuffle-btn {
+            background: linear-gradient(135deg, #2196f3, #42a5f5);
+            color: white;
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #f44336, #e57373);
+            color: white;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #667eea;
+        }
+
+        .close {
+            font-size: 32px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .card-list {
+            list-style: none;
+        }
+
+        .card-list li {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .card-list li:hover {
+            background: #e0e0e0;
+            transform: translateX(5px);
+        }
+
+        .card-list li strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .empty-list {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-style: italic;
+        }
+
+        .shortcuts {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .navigation {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            /* .flip-btn { 
+            grid-column: span 2; 
+        }  */
+        }
+    </style>
